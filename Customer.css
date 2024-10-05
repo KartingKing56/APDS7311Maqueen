@@ -1,0 +1,888 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    font-family: 'SF Pro Display', 'SF Mono';
+    text-decoration: none;
+    scroll-behavior: smooth;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none; 
+    -ms-user-select: none; 
+}
+
+*::-webkit-scrollbar {
+    display: none;
+    scroll-behavior: smooth;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+    box-shadow: 0 0 0 1000px white inset;
+    -webkit-text-fill-color: #000; /* Change the text color if needed */
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Hide arrows in input number for Firefox */
+input[type=number] {
+    appearance: text;
+    -webkit-appearance: none; /* Chrome, Safari, newer versions of Opera */
+    -moz-appearance: textfield;    /* Firefox */
+    appearance: none;         /* Standard syntax */
+}
+
+input[type="file"] {
+    opacity: 0;
+}
+
+/* This removes the default calendar and time icons in Chrome */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+/* Ensures all specified inputs do not show default appearance */
+input[type="date"],
+input[type="time"] {
+    -webkit-appearance: none; /* Chrome, Safari, newer versions of Opera */
+    -moz-appearance: none;    /* Firefox */
+    appearance: none;         /* Standard syntax */
+}
+
+.input-box .date,
+.input-box input::placeholder,
+.input-box select::placeholder {
+    color: transparent;
+    font-size: 0.8rem;
+}
+
+:root {
+    /* ====>  Colour variables  <==== */
+    --rgba-white: 255,255,255;
+    --white: #fbfffe;
+    --light: #c2ffe6;
+    --neon: #00ffbf;
+    --dark: #003d26;
+    --black: #00140a;
+    --rgba-black: 0,0,0;
+    --gradient: linear-gradient(27deg, var(--dark) 0%, var(--neon) 90%);
+    --upDown: linear-gradient(0deg, var(--light) -25%, var(--neon) 100%);
+
+    /* ====>  Box Shadow variables  <==== */
+    --outset: 8px 8px 10px -1px var(--dark),
+    -5px -5px 10px -1px var(--light);
+    --inset: inset 8px 8px 10px -8px var(--light),
+    inset -5px -5px 8px -7px var(--light);
+    --shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    --shadow2: 2px 1px 10px var(l);
+
+    /* ====>  Z-Index variables  <==== */
+    --lvl1: 1;
+    --lvl2: 10;
+    --lvl3: 100;
+    --lvl4: 1000;
+    --lvl5: 10000;
+    --loader: 100000;
+}
+
+html, body {
+    height: 100%;
+    min-height: 100%;
+    width: 100%;
+    min-width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: var(--light);
+}
+
+main {
+    display: flex;
+    width: 100%;
+    min-width: 100%;
+    height: 100vh;
+    flex: 1;
+    /* margin-bottom: 65px; Match the height of footer */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+    background: var(--light);
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+main section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: auto; /* Change from height: 100% to auto */
+    padding: 10px;
+    opacity: 0;
+    transform: scale(0.9);
+    z-index: var(--lvl1);
+    transition: opacity 0.3s ease-in, transform 0.5s ease-out;
+}
+
+main section.active {
+    opacity: 1;
+    transform: scale(1);
+    z-index: var(--lvl2);
+}
+
+button {
+    position: relative;
+    display: flex;
+    justify-content: center; /* Align items at the top */
+    align-items: center;
+    width: 70px;
+    min-height: 20px;
+    gap: 10px;
+    padding: 10px;
+    margin-right: 10px;
+    z-index: var(--lvl2) !important;
+    border-radius: 16px;
+    border: 1px solid rgba(var(--rgba-black), 0.3);
+    background: var(--white);
+    transform: scale(1);
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+button:hover,
+button:active {
+    background: var(--neon);
+    transform: scale(0.95);
+}
+
+.animate-bg {
+    z-index: 0;
+}
+
+.animate-bg div {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: transparent;
+    border: 6px solid var(--white);
+    z-index: 1;
+    opacity: 0;
+}
+
+.animate-bg div:nth-child(1) {
+    top: 90%;
+    left: 10%;
+    animation: bg 10s linear infinite;
+    animation-delay: 3s;
+}
+
+.animate-bg div:nth-child(2) {
+    top: 67%;
+    left: 50%;
+    animation: bg 12s linear infinite;
+    animation-delay: 2s;
+}
+
+.animate-bg div:nth-child(3) {
+    top: 10%;
+    left: 80%;
+    animation: bg 9s linear infinite;
+    animation-delay: 1s;
+}
+
+.animate-bg div:nth-child(4) {
+    top: 5%;
+    left: 7%;
+    animation: bg 10s linear infinite;
+}
+
+.animate-bg div:nth-child(5) {
+    top: 90%;
+    left: 85%;
+    animation: bg 8s linear infinite;
+    animation-delay: 1s;
+}
+
+.animate-bg div:nth-child(6) {
+    top: 50%;
+    left: 40%;
+    animation: bg 15s linear infinite;
+    animation-delay: 6s;
+}
+
+.animate-bg div:nth-child(7) {
+    top: 65%;
+    left: 0%;
+    animation: bg 13s linear infinite;
+    animation-delay: 3s;
+}
+
+.animate-bg div:nth-child(8) {
+    top: 45%;
+    left: 65%;
+    animation: bg 10s linear infinite;
+    animation-delay: 1s;
+}
+
+.animate-bg div:nth-child(9) {
+    top: 12%;
+    left: 45%;
+    animation: bg 9s linear infinite;
+    animation-delay: 2s;
+}
+
+.animate-bg div:nth-child(10) {
+    top: 40%;
+    left: 12%;
+    animation: bg 11s linear infinite;
+    animation-delay: 3s;
+}
+
+@keyframes bg {
+    0% {
+        transform: scale(0) translateY(0) rotate(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.3) translateY(-90px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+
+
+
+
+
+
+
+
+/* -----------------------------         Sign Up & Log In         ------------------------------------ */
+
+
+
+
+
+
+
+
+
+
+#form {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: purple;
+    width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+    border-radius: 10px;
+    z-index: 1;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: 0.2s ease-in-out;
+}
+
+#form.active {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 10000;
+}
+
+#form .body {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    box-shadow: grey;
+    border: 3px solid white;
+    width: 350px;
+    height: 500px;
+    min-height: 500px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+#form #chk {
+    display: none;
+}
+
+#form .body .top {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#form .body label {
+    color: black;
+    font-size: 1.5rem;
+    justify-content: center;
+    display: flex;
+    margin: 10px auto 30px auto;
+    font-weight: bold;
+    white-space: nowrap;
+    cursor: pointer;
+    transform: scale(0.6);
+    transition: .5s ease-in-out;
+}
+
+#form .body .top button {
+    width: 60%;
+    height: 40px;
+    margin: 10px auto;
+    justify-content: center;
+    display: block;
+    color: black;
+    background: transparent;
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 20px;
+    outline: none;
+    border: 2px solid black;
+    border-radius: 5px;
+    transform: scale(1);
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+#form .body .top button:hover, 
+#form .body .top button:active {
+    color: grey;
+    text-shadow: darkgray;
+    border: 2px solid grey;
+    background: white;
+    transform: scale(0.95);
+}
+
+#form .body .bottom {
+    background: grey;
+    position: absolute;
+    width: 100%;
+    height: 445px;
+    bottom: 0;
+    border-radius: 50% / 10%;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    transform: translateY(0);
+    transition: 0.8s ease-in-out;
+    padding: 10px;
+    z-index: 10;
+}
+
+#form .body .bottom label {
+    color: white;
+    transform: scale(1);
+}
+
+#form .body .bottom button {
+    width: 60%;
+    height: 40px;
+    margin: 10px auto;
+    justify-content: center;
+    display: block;
+    color: black;
+    background: white;
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 20px;
+    outline: none;
+    border: 2px solid black;
+    border-radius: 5px;
+    transform: scale(1);
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+#form .body .bottom button:hover, 
+#form .body .bottom button:active {
+    color: grey;
+    border: 2px solid grey;
+    transform: scale(0.95);
+}
+
+#chk:checked ~ #logInPage {
+    transform: translateY(390px);
+}
+
+#chk:checked ~ #logInPage label {
+    transform: scale(0.8);
+    margin: 0px auto 30px auto;
+}
+
+#chk:checked ~ #signUpPage label {
+    transform: scale(1);
+    color: black;
+}
+
+/* Updated input-box styling to adjust height and improve readability */
+#form .body .input-box {
+    position: relative;
+    width: 75%;
+    margin: 15px auto 0px auto;
+    border-radius: 5px;
+}
+
+#form .body .input-box input,
+#form .body .input-box select {
+    height: 35px; /* Adjusted height for better alignment */
+    padding: 8px 10px 8px 40px; /* Adjusted padding for readability */
+    font-size: 0.85rem; /* Smaller font size to maintain readability */
+    border: 1px solid black;
+    width: 100%;
+    color: black;
+    font-weight: 300;
+    border-radius: 5px;
+    outline: none;
+    cursor: text;
+    transition: 0.5s ease;
+}
+
+#form .body .input-box span {
+    position: absolute;
+    left: 0px; /* Adjusted for consistency */
+    padding: 8px 10px 10px 40px;
+    pointer-events: none;
+    font-weight: 300;
+    font-size: 1rem;
+    letter-spacing: 0.05rem;
+    color: black;
+    transition: 0.5s ease;
+}
+
+/* For phone number and select field spans */
+#form .body .input-box input:valid ~ span,
+#form .body .input-box input:focus ~ span,
+#form .body .input-box select:valid ~ span,
+#form .body .input-box select:focus ~ span {
+    color: black;
+    background: white;
+    transform: translate(20px, -5px); /* Same as other inputs */
+    border-radius: 3px;
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+    font-size: 0.8rem;
+    padding: 0 8px;
+}
+
+/* Ensure icons are vertically centered in input boxes */
+#form .body .input-box i {
+    position: absolute;
+    top: 50%; /* Align icon vertically */
+    left: 10px; /* Adjust this value as needed */
+    transform: translateY(-50%); /* Center the icon */
+    font-size: 1.2rem;
+    color: black;
+    padding-right: 5px;
+    border-right: 2px solid black;
+    transition: 0.3s ease;
+}
+
+#form .body .input-box input:valid ~ i,
+#form .body .input-box input:focus ~ i,
+#form .body .input-box input:hover ~ i {
+    color: grey;
+    border-right: 2px solid grey;
+}
+
+#form .body .input-box input:valid,
+#form .body .input-box input:focus,
+#form .body .input-box input:hover {
+    border: 2px solid grey;
+}
+
+
+
+
+
+
+
+
+
+
+/* -----------------------------         Main (pay)         ------------------------------------ */
+
+
+
+
+
+
+
+
+
+#pay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  /* Center content vertically */
+    align-items: center;      /* Center content horizontally */
+    width: 100%; /* Adjust width as needed */
+    padding: 20px;
+
+    gap: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+/*      >>>     Body    <<< */
+
+
+
+
+
+
+
+
+
+#pay .body {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background: var(--white);
+    border: 5px solid var(--white);
+    box-shadow: var(--shadow);
+    border-radius: 2rem;
+    overflow: hidden;
+    z-index: var(--lvl3);
+}
+
+#pay .body .page {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transform: scale(0.95);
+    transition: opacity 0.3s ease, transform 0.5s ease-out;
+}
+
+#pay .body .page.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+#pay .body .page .top {
+    position: relative;
+    display: flex;
+    grid-template-columns: 1fr 30px 1fr;
+    justify-content: center; /* Align items at the top */
+    align-items: center;
+    width: 100%;
+    min-height: 100px;
+    padding: 10px 0;
+    background: var(--upDown);
+    border-radius: 60% / 30%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    z-index: var(--lvl2) !important;
+}
+
+#pay .body .page .top h1 {
+    display: flex;
+    justify-content: center; /* Align items at the top */
+    align-items: center;
+    border-bottom: 1px solid black;
+    font-size: 1.9rem;
+}
+
+#pay .body .page .top i {
+    display: flex;
+    justify-content: center; /* Align items at the top */
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+#pay .body .page .bottom {
+    display: flex;
+    justify-content: flex-end; /* Align items at the top */
+    align-items: flex-end;
+    width: 100%;
+    padding: 10px;
+    z-index: var(--lvl2) !important;
+    bottom: 0;
+}
+
+
+
+
+
+
+
+
+
+/*      >>>     Menu (inputs)     <<<*/
+
+
+
+
+
+
+
+
+
+#pay .body .page .middle{
+    display: flex;
+    height: 70%;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    transition: 0.2s ease-in-out;
+}
+
+#pay .body .page .middle ul{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    padding: 10px;
+    margin-left: 10px;
+}
+
+#pay .body .page .middle ul li{
+    position: relative;
+    width: 50%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 10px;
+    gap: 10px;
+    margin-top: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+#pay .body .page .middle .currency {
+    position: relative;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 10px;
+    gap: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+#pay .body .page .middle .provider {
+    position: relative;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 10px;
+    gap: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+#pay .body .page .middle .amount {
+    position: relative;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    margin-left: 50px;
+    gap: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+#pay .body .page .middle .amount input{
+    height: 50px;
+    min-height: 50px;
+    width: 50%;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    border: 1px solid var(--black);
+    border-radius: 5px;
+    outline: none;
+    resize: none;
+    transition: 0.2s ease-in-out;
+}
+
+#pay .body .page .middle .amount span{
+    position: absolute;
+    left: 0;
+    padding: 10px;
+    padding-left: 20px;
+    pointer-events: none;
+    font-size: 1rem;
+    transition: 0.2s ease-in-out;
+}
+
+#pay .body .page .middle .amount input:valid ~ span,
+#pay .body .page .middle .amount input:focus ~ span{
+    color: var(--neon);
+    transform: translateX(15px) translateY(-10px);
+    scale: 0.8;
+    padding: 0 10px;
+    background: var(--white);
+    color: var(--neon);
+    letter-spacing: 0.2rem;
+}
+
+#pay .body .page .middle .amount input:focus,
+#pay .body .page .middle .amount input:valid {
+    border: 1px solid var(--neon);
+}
+
+#pay .body .page .middle ul li select{
+    height: 30px;
+    min-height: 40px;
+    width: 75%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1rem;
+    border: 0px;
+    border-bottom: 1px solid var(--black);
+    transition: 0.2s ease-in-out;
+}
+
+#pay .body .page .middle ul li span{
+    position: absolute;
+    left: 0;
+    padding: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 40px;
+    padding-left: 20px;
+    pointer-events: none;
+    font-size: 1rem;
+    transition: 0.2s ease-in-out;
+}
+
+#pay .body .page .middle ul li select:focus ~ span,
+#pay .body .page .middle ul li select:valid ~ span {
+    color: var(--neon);
+    transform: translateX(15px) translateY(-15px);
+    scale: 0.8;
+    padding: 0 10px;
+    background: var(--white);
+    color: var(--neon);
+    letter-spacing: 0.2rem;
+}
+
+#pay .body .page .middle ul li select:focus,
+#pay .body .page .middle ul li select:valid {
+    outline: none;
+    border-color: var(--neon);
+}
+
+#pay .body .page .middle ul li select:hover {
+    cursor: pointer;
+}
+
+#pay .body .page .middle ul li select option{
+    font-size: 1rem;
+    flex-direction: row;
+    transition: 0.2s ease-in-out;
+}
+
+#pay .body .page .middle ul li select option:hover{
+    background: rgba(0, 153, 255, 0.2);
+    color: black;
+}
+
+
+
+
+
+
+
+
+
+/*      >>>     Menu (account details)     <<<*/
+
+
+
+
+
+
+
+
+
+#pay .body #accountInformationPage .middle {
+    margin-top: 10px;
+}
+
+#pay .body .page .middle .account-details {
+    position: relative;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    margin-left: 50px;
+    gap: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+#pay .body .page .middle .account-details input{
+    height: 50px;
+    min-height: 50px;
+    width: 50%;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    border: 1px solid var(--black);
+    border-radius: 5px;
+    outline: none;
+    resize: none;
+    transition: 0.2s ease-in-out;
+}
+
+#pay .body .page .middle .account-details span{
+    position: absolute;
+    left: 0;
+    padding: 10px;
+    padding-left: 20px;
+    pointer-events: none;
+    font-size: 1rem;
+    transition: 0.2s ease-in-out;
+}
+
+#pay .body .page .middle .account-details input:valid ~ span,
+#pay .body .page .middle .account-details input:focus ~ span{
+    color: var(--neon);
+    transform: translateX(15px) translateY(-10px);
+    scale: 0.8;
+    padding: 0 10px;
+    background: var(--white);
+    color: var(--neon);
+    letter-spacing: 0.2rem;
+}
+
+#pay .body .page .middle .account-details input:focus,
+#pay .body .page .middle .account-details input:valid {
+    border: 1px solid var(--neon);
+}

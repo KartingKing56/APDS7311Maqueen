@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="Customer.css" rel="stylesheet">
+
+    <title>My Web Project</title>
+</head>
+<body>
+    <main>
+
+        <section id="pay" style="display: flex;"  >
+            <div class="body">
+                <div class="page active" id="payDetailsPage">
+                    <div class="top">
+                        <h1>Make a Payment</h1>
+                    </div>
+
+                    <div class="middle">
+                        <ul>
+                            <li>
+                                <div class="currency">
+                                    <select id="comboBox" name="comboBox" required="required">
+                                        <option value="" disabled selected></option>
+                                        <option value="Option 1">Sick Leave</option>
+                                        <option value="Option 2">Personal Time</option>
+                                        <option value="Option 3">Family Needs</option>
+                                        <option value="Option 4">Other</option>
+                                    </select>
+                                    <span>Currency . . .</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="provider">
+                                    <select id="comboBox" name="comboBox" required="required">
+                                        <option value="" disabled selected></option>
+                                        <option value="Option 1">Sick Leave</option>
+                                        <option value="Option 2">Personal Time</option>
+                                        <option value="Option 3">Family Needs</option>
+                                        <option value="Option 4">Other</option>
+                                    </select>
+                                    <span>Provider . . .</span>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <div class="amount">
+                            <input type="number" id="inAmount" required></input>
+                            <span>Amount . . .</span>
+                        </div>
+                    </div>
+
+                    <div class="bottom">
+                        <button id="nextBtn">Continue</button>
+                    </div>
+                </div>
+
+                <div class="page"  style="display: none;" id="accountInformationPage">
+                    <div class="top">
+                        <h1>Make a Payment</h1>
+                    </div>
+
+                    <div class="middle">
+                        <div class="account-details">
+                            <input type="number" id="inAmount" required></input>
+                            <span>Amount . . .</span>
+                        </div>
+                        <div class="account-details">
+                            <input type="number" id="inAmount" required></input>
+                            <span>Amount . . .</span>
+                        </div>
+                        <div class="account-details">
+                            <input type="number" id="inAmount" required></input>
+                            <span>Amount . . .</span>
+                        </div>
+                        <div class="account-details">
+                            <input type="number" id="inAmount" required></input>
+                            <span>Amount . . .</span>
+                        </div>
+                        <div class="account-details">
+                            <input type="number" id="inAmount" required></input>
+                            <span>Amount . . .</span>
+                        </div>
+                    </div>
+
+                    <div class="bottom">
+                        <button id="submitBtn">Submit</button>
+                    </div>
+                </div>
+
+                <div class="page" style="display: none;">
+
+                </div>
+            </div>
+        </section>
+
+        
+        <div id="form" class="active" >
+            <div class="body">
+                <input type="checkbox" id="chk" aria-hidden="true">
+    
+                <div class="top" id="signUpPage">
+                    <form id="signUpForm">
+                        <label for="chk" aria-hidden="true">Sign Up!</label>
+    
+                        <div class="input-box">
+                            <input type="text" id="signName" autocomplete="given-name" required>
+                            <span>Name & Surname...</span>
+                        </div>
+    
+                        <div class="input-box">
+                            <input type="number" id="signId" autocomplete="id" required>
+                            <span>ID Number...</span>
+                        </div>
+    
+                        <div class="input-box">
+                            <input type="number" id="signAccount" autocomplete="account-number" required>
+                            <span>Account Number...</span>
+                        </div>
+    
+                        <div class="input-box">
+                            <input type="password" id="signPassword" required>
+                            <span>Password...</span>
+                        </div>
+    
+                        <div class="input-box">
+                            <input type="password" id="signConfPassword" required>
+                            <span>Confirm Password...</span>
+                        </div>
+    
+                        <button id="createAccount" type="submit">Sign Up</button>
+                    </form>
+                </div>
+    
+                <div class="bottom" id="logInPage">
+                    <form id="loginForm">
+                        <label for="chk" aria-hidden="true">Log In!</label>
+    
+                        <div class="input-box">
+                            <input type="text" id="loginUsername" required>
+                            <span>Username...</span>
+                        </div>
+                        
+                        <div class="input-box">
+                            <input type="number" id="loginAccountNum" required>
+                            <span>Account Number...</span>
+                        </div>
+    
+                        <div class="input-box">
+                            <input type="password" id="loginPassword" required>
+                            <span>Password...</span>
+                        </div>
+    
+                        <button id="login" type="submit">Log In</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+    <script type="module" src="Customer.js"></script>
+</body>
+</html>
