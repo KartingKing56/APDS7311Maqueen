@@ -4,38 +4,58 @@
 const saltRounds = 13;
 
 // Function to hash a password
-async function hashPassword(password) {
+// Client-side: Function to handle the signup process
+async function handleSignup() {
+    const signName = document.getElementById('signName').value;
+    const signPassword = document.getElementById('signPassword').value;
+    const signConfPassword = document.getElementById('signConfPassword').value;
+
+    if (signPassword !== signConfPassword) {
+        alert('Passwords do not match');
+        return;
+    }
+
+    // Send the data to the server for hashing and storage
     try {
-        // Generate a salt
-        const salt = await genSalt(saltRounds);
-        
-        // Hash the password with the salt
-        const hashedPassword = await hash(password, salt);
-        
-        return hashedPassword;
+        const response = await fetch('/api/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: signName, password: signPassword }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            alert('Signup successful');
+        } else {
+            alert(`Signup failed: ${data.message}`);
+        }
     } catch (error) {
-        console.error("Error while hashing password:", error);
-        throw error;
+        console.error('Signup error:', error);
     }
 }
 
-async function matchingPasswords(password, confirm) {
+// Client-side: Function to handle the login process
+async function handleLogin() {
+    const loginName = document.getElementById('loginUsername').value;
+    const loginPassword = document.getElementById('loginPassword').value;
 
-    const matches = password === confirm;
-
-    return matches;
-}
-
-// Function to check if a password matches the stored hash
-async function verifyPassword(plainPassword, hashedPassword) {
+    // Send the login credentials to the server for verification
     try {
-        // Compare the provided plain password with the hashed password stored in the database
-        const match = await compare(plainPassword, hashedPassword);
-        
-        return match;  // True if it matches, false otherwise
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: loginName, password: loginPassword }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            alert('Login successful');
+            console.log('JWT Token:', data.token);
+        } else {
+            alert(`Login failed: ${data.message}`);
+        }
     } catch (error) {
-        console.error("Error while verifying password:", error);
-        throw error;
+        console.error('Login error:', error);
     }
 }
 
@@ -111,27 +131,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const plainPassword = signPassword.value;
         const confPassword = signConfirmPassword.value;
 
-        if (matchingPasswords(plainPassword, confPassword))
-        {
-            const hashedPassword = await hashPassword(plainPassword);
-            console.log('Hashed Password:', hashedPassword);
-            
-            // Store hashedPassword in your database
-        }
+        
+        event.preventDefault(); // Prevent form submission
+        handleSignup(); // Call the signup handler
         
     });
 
     logInBtn.addEventListener('click', async function() {
 
-        const storedHashedPassword = 'stored-hash-from-db';  // Get this from your database
-        const password = loginPassword.value;
-        const isMatch = await verifyPassword(password, storedHashedPassword);
-        
-        if (isMatch) {
-            console.log('Password is correct, proceed with login.');
-        } else {
-            console.log('Incorrect password.');
-        }
+        event.preventDefault(); // Prevent form submission
+        handleLogin(); // Call the login handler
 
         activateHTML(accountForm, paySection);
     });
