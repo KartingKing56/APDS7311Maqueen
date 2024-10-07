@@ -3,7 +3,26 @@
 // Number of salt rounds (cost factor)
 const saltRounds = 13;
 
-// Function to hash a password
+
+const accountForm = document.getElementById("form");
+const homeSection = document.getElementById("home");
+const paySection = document.getElementById("pay");
+const detailsPage = document.getElementById("payDetailsPage");
+const accountInfoPage = document.getElementById("accountInformationPage");
+
+const signUpBtn = document.getElementById("createAccount");
+const chk = document.getElementById('chk');
+const logInBtn = document.getElementById("login");
+const nextBtn = document.querySelector("#pay .body .page .bottom #nextBtn");
+const submitBtn = document.getElementById("submitBtn");
+const localPaymentBtn = document.getElementById("localPaymentBtn");
+const internationalPaymentBtn = document.getElementById("internationalPaymentBtn");
+
+const signPassword = document.getElementById('signPassword');
+const signConfirmPassword = document.getElementById('signConfPassword');
+
+const loginPassword = document.getElementById('loginPassword');
+
 // Client-side: Function to handle the signup process
 async function handleSignup() {
     const signName = document.getElementById('signName').value;
@@ -107,24 +126,24 @@ function activateHTML(hideThisBox, showThisBox) {
 
 document.addEventListener('DOMContentLoaded', async function() {
     await mainNavigation();
-})
+});
 
+document.addEventListener('DOMContentLoaded', async function() {
+    localPaymentBtn.addEventListener('click', async function() {
+        activateHTML(homeSection, paySection);
+
+        activateHTML(accountInfoPage, detailsPage);
+    });
+
+    internationalPaymentBtn.addEventListener('click', async function() {
+        activateHTML(homeSection, paySection);
+
+        activateHTML(accountInfoPage, detailsPage);
+    });
+});
 
 document.addEventListener('DOMContentLoaded', function() {
-    const signUpBtn = document.getElementById("createAccount");
-    const chk = document.getElementById('chk');
-    const logInBtn = document.getElementById("login");
-    const accountForm = document.getElementById("form");
-    const paySection = document.getElementById("pay");
-    const detailsPage = document.getElementById("payDetailsPage");
-    const accountInfoPage = document.getElementById("accountInformationPage");
-    const nextBtn = document.querySelector("#pay .body .page .bottom #nextBtn");
-    const submitBtn = document.getElementById("submitBtn");
-
-    const signPassword = document.getElementById('signPassword');
-    const signConfirmPassword = document.getElementById('signConfPassword');
-
-    const loginPassword = document.getElementById('loginPassword');
+    
 
     signUpBtn.addEventListener('click', async function() {
 
@@ -148,4 +167,4 @@ document.addEventListener('DOMContentLoaded', function() {
     nextBtn.addEventListener('click', function() {
         activateHTML(detailsPage, accountInfoPage);
     });
-})
+});
