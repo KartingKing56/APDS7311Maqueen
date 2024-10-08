@@ -70,6 +70,9 @@ async function handleLogin() {
         if (response.ok) {
             alert('Login successful');
             console.log('JWT Token:', data.token);
+
+            
+            activateHTML(accountForm, paySection);
         } else {
             alert(`Login failed: ${data.message}`);
         }
@@ -161,7 +164,6 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault(); // Prevent form submission
         handleLogin(); // Call the login handler
 
-        activateHTML(accountForm, paySection);
     });
 
     nextBtn.addEventListener('click', function() {
