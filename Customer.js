@@ -5,6 +5,8 @@ const saltRounds = 13;
 
 
 const accountForm = document.getElementById("form");
+const create = document.getElementById("signUpPage");
+const login = document.getElementById("logInPage");
 const homeSection = document.getElementById("home");
 const paySection = document.getElementById("pay");
 const detailsPage = document.getElementById("payDetailsPage");
@@ -145,18 +147,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 document.addEventListener('DOMContentLoaded', function() {
     
 
-    signUpBtn.addEventListener('click', async function() {
-
-        const plainPassword = signPassword.value;
-        const confPassword = signConfirmPassword.value;
-
+    create.addEventListener('submit', async function() {
         
         event.preventDefault(); // Prevent form submission
         handleSignup(); // Call the signup handler
         
     });
 
-    logInBtn.addEventListener('click', async function() {
+    login.addEventListener('submit', async function() {
 
         event.preventDefault(); // Prevent form submission
         handleLogin(); // Call the login handler
