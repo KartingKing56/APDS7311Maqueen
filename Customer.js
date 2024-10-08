@@ -26,22 +26,40 @@ const signConfirmPassword = document.getElementById('signConfPassword');
 const loginPassword = document.getElementById('loginPassword');
 
 // Client-side: Function to handle the signup process
-async function handleSignup() {
+async function handleSignup(event) {
+    event.preventDefault(); // Prevent form submission
+
+    // Collect values from the input fields
     const signName = document.getElementById('signName').value;
+    const signSurname = document.getElementById('signSurname').value;
+    const signId = document.getElementById('signId').value;
+    const signEmail = document.getElementById('signEmail').value;
+    const signAccount = document.getElementById('signAccount').value;
     const signPassword = document.getElementById('signPassword').value;
     const signConfPassword = document.getElementById('signConfPassword').value;
 
+    // Validate password and confirm password
     if (signPassword !== signConfPassword) {
         alert('Passwords do not match');
         return;
     }
 
-    // Send the data to the server for hashing and storage
+    // Construct the payload for the server
+    const signupData = {
+        name: signName,
+        surname: signSurname,
+        idNumber: signId,
+        email: signEmail,
+        accountNumber: signAccount,
+        password: signPassword,
+    };
+
+    // Send the data to the server for processing
     try {
         const response = await fetch('/api/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: signName, password: signPassword }),
+            body: JSON.stringify(signupData),
         });
 
         const data = await response.json();
@@ -54,6 +72,7 @@ async function handleSignup() {
         console.error('Signup error:', error);
     }
 }
+
 
 // Client-side: Function to handle the login process
 async function handleLogin() {
