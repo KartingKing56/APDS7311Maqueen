@@ -339,8 +339,12 @@ button:active {
     font-weight: bold;
     white-space: nowrap;
     cursor: pointer;
-    transform: scale(0.6);
+    transform: scale(0.8);
     transition: .5s ease-in-out;
+}
+
+#form .body .top label{
+    margin-bottom: 5px;
 }
 
 #form .body .top button {
@@ -348,12 +352,13 @@ button:active {
     height: 40px;
     margin: 10px auto;
     justify-content: center;
+    align-items: center;
     display: block;
     color: black;
     background: transparent;
     font-size: 1em;
     font-weight: bold;
-    margin-top: 20px;
+    margin-top: 10px;
     outline: none;
     border: 2px solid black;
     border-radius: 5px;
@@ -375,12 +380,12 @@ button:active {
     background: grey;
     position: absolute;
     width: 100%;
-    height: 445px;
+    height: 460px;
     bottom: 0;
     border-radius: 50% / 10%;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    transform: translateY(0);
+    transform: translateY(0px);
     transition: 0.8s ease-in-out;
     padding: 10px;
     z-index: 10;
@@ -418,7 +423,7 @@ button:active {
 }
 
 #chk:checked ~ #logInPage {
-    transform: translateY(390px);
+    transform: translateY(410px);
 }
 
 #chk:checked ~ #logInPage label {
@@ -458,6 +463,7 @@ button:active {
     position: absolute;
     left: 0px; /* Adjusted for consistency */
     padding: 8px 10px 10px 40px;
+    padding-left: 10px;
     pointer-events: none;
     font-weight: 300;
     font-size: 1rem;
@@ -505,6 +511,290 @@ button:active {
 #form .body .input-box input:focus,
 #form .body .input-box input:hover {
     border: 2px solid grey;
+}
+
+
+
+
+
+
+
+
+
+/* -----------------------------         Main (Menu)         ------------------------------------ */
+
+
+
+
+
+
+
+
+
+#home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  /* Center content vertically */
+    align-items: center;      /* Center content horizontally */
+    width: 100%; /* Adjust width as needed */
+    padding: 20px;
+
+    gap: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+/*      >>>     Body    <<< */
+
+
+
+
+
+
+
+
+
+#home .body {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background: var(--white);
+    border: 5px solid var(--white);
+    box-shadow: var(--shadow);
+    border-radius: 2rem;
+    overflow: hidden;
+    z-index: var(--lvl3);
+}
+
+#home .body .page {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transform: scale(0.95);
+    transition: opacity 0.3s ease, transform 0.5s ease-out;
+}
+
+#home .body .page.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+#home .body .page .top {
+    position: relative;
+    display: flex;
+    grid-template-columns: 1fr 30px 1fr;
+    justify-content: center; /* Align items at the top */
+    align-items: center;
+    width: 100%;
+    min-height: 100px;
+    padding: 10px 0;
+    background: var(--upDown);
+    border-radius: 60% / 30%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    z-index: var(--lvl2) !important;
+}
+
+#home .body .page .top h1 {
+    display: flex;
+    justify-content: center; /* Align items at the top */
+    align-items: center;
+    border-bottom: 1px solid black;
+    font-size: 1.9rem;
+}
+
+#home .body .page .top i {
+    display: flex;
+    justify-content: center; /* Align items at the top */
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+
+
+
+
+
+
+
+
+/*      >>>     Mddle    <<< */
+
+
+
+
+
+
+
+
+
+#home .body .page .middle{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+#home .body .page .middle .buttons {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    gap: 10px;
+}
+
+#home .body .page .middle .buttons button {
+    display: flex;
+    height: 60px;
+    min-height: 60px;
+    width: 25%;
+    padding: 10px;
+}
+
+
+
+
+
+
+
+
+
+/*      >>>     Bottom(bank details)    <<< */
+
+
+
+
+
+
+
+
+#home .body .page .bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+    z-index: var(--lvl2) !important;
+    bottom: 0;
+}
+
+#home .body .page .bottom .banking-details{
+    display: flex;
+    height: 150px;
+    min-height: 150px;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+#home .body .page .bottom .banking-details .details{
+    height: 80%;
+    gap: 10px;
+}
+
+#home .body .page .bottom .banking-details .details h5{
+    font-size: 1rem;
+}
+
+#home .body .page .bottom .banking-details ul{
+    display: flex;
+    width: 100%;
+    height: 75%;
+    flex-direction: row;
+    gap: 10px;
+}
+
+#home .body .page .bottom .banking-details ul li{
+    display: flex;
+    width: 100%;
+    height: 75%;
+    flex-direction: column;
+    padding: 10px;
+}
+
+
+
+
+
+
+
+
+
+/*      >>>     Bottom(payment receipts)    <<< */
+
+
+
+
+
+
+
+
+
+
+#home .body .page .bottom .payment-receipts {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+#home .body .page .bottom .payment-receipts ul {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+    gap: 15px;
+    overflow-y: auto;
+}
+
+#home .body .page .bottom .payment-receipts ul li{
+    display: flex;
+    width: 100%;
+    height: 75%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 15px;
+}
+
+#home .body .page .bottom .payment-receipts ul li button{
+    display: flex;
+    width: 100%;
+    height: 50%;
+    flex-direction: row;
+    gap: 15px;
+    padding: 10px;
 }
 
 
@@ -885,4 +1175,199 @@ button:active {
 #pay .body .page .middle .account-details input:focus,
 #pay .body .page .middle .account-details input:valid {
     border: 1px solid var(--neon);
+}
+
+
+
+
+
+
+
+
+/* -----------------------------         Footer         ------------------------------------ */
+
+
+
+
+
+
+
+
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 500px;
+    height: 70px;
+    padding: 0 25px;
+    background: var(--white);
+    box-shadow: 0 0 3px 20px var(--light);
+    border-top-right-radius: 1.2rem;
+    border-top-left-radius: 1.2rem;
+    z-index: var(--lvl4);
+}
+
+footer ul {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 20px;
+}
+
+footer ul li {
+    box-sizing: border-box;
+    position: relative;
+    list-style: none;
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+    z-index: var(--lvl1);
+}
+
+footer ul li .a {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    font-weight: 500;
+}
+
+footer ul li .icon {
+    position: relative;
+    display: block;
+    line-height: 75px;
+    font-size: 1.5rem;
+    text-align: center;
+    transition: 0.5s ease;
+    color: var(--dark);
+}
+
+footer ul #mainLi.active .icon {
+    background: var(--gradient);
+    transform: translateY(-35px);
+    font-size: 1.3rem;
+    transition: 0.2s ease-in-out;
+}
+
+footer ul #mainLi .icon {
+    background: linear-gradient(27deg, var(--dark) 0%, var(--dark) 90%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: var(--inset), var(--shadow);
+    transform: translateY(-25px);
+    font-size: 1.2rem;
+    color: var(--white);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    transition: 0.2s ease-in-out;
+}
+
+footer ul li.active .icon {
+    transform: translateY(-10px);
+    font-size: 1.5rem;
+    background-image: var(--gradient);
+    -webkit-background-clip: text; /* For Safari */
+    background-clip: text; /* App*/ 
+    color: transparent;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+footer ul li .text {
+    position: absolute;
+    color: var(--dark);
+    font-weight: 200;
+    font-size: 0.8rem;
+    letter-spacing: 0.1rem;
+    transition: 0.5s ease;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+footer ul li.active .text {
+    opacity: 1;
+    font-weight: bold;
+    transform: translateY(15px);
+    color: var(--dark);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+footer .indicator {
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 70px;
+    background: var(--light);
+    color: var(--white);
+    box-shadow: var(--inset);
+    border-radius: 50%;
+    border: 6px solid var(--light);
+    transition: transform 0.5s ease; /* Add transition for transform property */
+}
+
+footer .indicator::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -77%;
+    width: 50px;
+    height: 35px;
+    background: transparent;
+    border-top-right-radius: 100%;
+    box-shadow: 1px -15px 3px var(--light);
+    pointer-events: none;
+}
+
+footer .indicator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -77%;
+    width: 50px;
+    height: 35px;
+    background: transparent;
+    border-top-left-radius: 100%;
+    box-shadow: -1px -10px 3px var(--light);
+    pointer-events: none;
+}
+
+
+
+
+
+
+
+
+
+
+/* Medium Tablet screen width */
+@media (max-width: 500px) {
+    section {
+        min-height: calc(100vh - 100px) !important;
+        height: calc(100vh - 100px) !important;
+        max-height: calc(100vh - 100px) !important;
+        padding: 10px !important;
+    }
+    #menu .body .page {
+        padding: 10px !important;
+    }
+    footer,
+    footer ul {
+        padding: 0 10px;
+        width: 100%;
+    }
 }
