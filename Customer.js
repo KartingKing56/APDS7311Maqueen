@@ -56,7 +56,7 @@ async function handleSignup(event) {
 
     // Send the data to the server for processing
     try {
-        const response = await fetch('/api/signup', {
+        const response = await fetch('http://localhost:3000/api/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(signupData),
@@ -81,7 +81,7 @@ async function handleLogin() {
 
     // Send the login credentials to the server for verification
     try {
-        const response = await fetch('/api/login', {
+        const response = await fetch('http://localhost:3000/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: loginName, password: loginPassword }),
@@ -91,6 +91,8 @@ async function handleLogin() {
         if (response.ok) {
             alert('Login successful');
             console.log('JWT Token:', data.token);
+
+            activateHTML(accountForm, paySection);
         } else {
             alert(`Login failed: ${data.message}`);
         }
@@ -169,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
     create.addEventListener('submit', async function() {
         
         event.preventDefault(); // Prevent form submission
-        handleSignup(); // Call the signup handler
+        handleSignup(event); // Call the signup handler
         
     });
 
@@ -178,7 +180,6 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault(); // Prevent form submission
         handleLogin(); // Call the login handler
 
-        activateHTML(accountForm, paySection);
     });
 
     nextBtn.addEventListener('click', function() {
