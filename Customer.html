@@ -6,14 +6,95 @@
 
     <link href="Customer.css" rel="stylesheet">
 
+    <!--   Icon Import   -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
     <title>My Web Project</title>
 </head>
 <body>
     <main>
 
-        <section id="pay" style="display: flex;"  >
+        <section id="home" style="display: flex;"   class="active">
             <div class="body">
-                <div class="page active" id="payDetailsPage">
+                <div class="page active" style="display: flex;" >
+                    <div class="top">
+                        <h1>Customer Dashboard</h1>
+                    </div>
+                    <div class="middle">
+                        <div class="welcome">
+                            <h2>Welcome, Customer!</h2>
+                        </div>
+                        <div class="buttons">
+                            <button id="localPaymentBtn">Make Local Payment</button>
+                            <button id="internationalPaymentBtn">Make International Payment</button>
+                        </div>
+                        
+                    </div>
+                    <div class="bottom">
+                        <div class="banking-details">
+                            <h3>Banking Details</h3>
+                            <div class="details">
+                                <h5>Current Acc.</h5>
+                                <ul>
+                                    <li>
+                                        <div class="label">Acc No:</div>
+                                        <div class="content">xxxxxxxxxxxx</div>
+                                    </li>
+                                    <li>
+                                        <div class="label">Available Bal:</div>
+                                        <div class="content">R15000</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="payment-receipts">
+                            <h3>Payment Receipts</h3>
+                            <ul>
+                                <li>
+                                    <div class="icon"><i class="ri-bank-card-2-fill"></i></div>
+                                    <div class="date">2024/04/08</div>
+                                    <div class="name">S. Rajie</div>
+                                    <div class="button"><button>Pay Again</button></div>
+                                </li>
+                                <li>
+                                    <div class="icon"><i class="ri-bank-card-2-fill"></i></div>
+                                    <div class="date">2024/04/08</div>
+                                    <div class="name">S. Rajie</div>
+                                    <div class="button"><button>Pay Again</button></div>
+                                </li>
+                                <li>
+                                    <div class="icon"><i class="ri-bank-card-2-fill"></i></div>
+                                    <div class="date">2024/04/08</div>
+                                    <div class="name">S. Rajie</div>
+                                    <div class="button"><button>Pay Again</button></div>
+                                </li>
+                                <li>
+                                    <div class="icon"><i class="ri-bank-card-2-fill"></i></div>
+                                    <div class="date">2024/04/08</div>
+                                    <div class="name">S. Rajie</div>
+                                    <div class="button"><button>Pay Again</button></div>
+                                </li>
+                                <li>
+                                    <div class="icon"><i class="ri-bank-card-2-fill"></i></div>
+                                    <div class="date">2024/04/08</div>
+                                    <div class="name">S. Rajie</div>
+                                    <div class="button"><button>Pay Again</button></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" style="display: none;">
+
+                </div>
+            </div>
+        </section>
+
+        <section id="pay"  style="display: none"  >
+            <div class="body">
+                <div class="page active" style="display: flex;" id="payDetailsPage">
                     <div class="top">
                         <h1>Make a Payment</h1>
                     </div>
@@ -59,34 +140,31 @@
 
                 <div class="page"  style="display: none;" id="accountInformationPage">
                     <div class="top">
-                        <h1>Make a Payment</h1>
+                        <h1>Details</h1>
                     </div>
 
                     <div class="middle">
                         <div class="account-details">
-                            <input type="number" id="inAmount" required></input>
-                            <span>Amount . . .</span>
+                            <input type="text" id="payName" required></input>
+                            <span>Recipient Name . . .</span>
                         </div>
                         <div class="account-details">
-                            <input type="number" id="inAmount" required></input>
-                            <span>Amount . . .</span>
+                            <input type="text" id="payBank" required></input>
+                            <span>Recipient Bank . . .</span>
                         </div>
                         <div class="account-details">
-                            <input type="number" id="inAmount" required></input>
-                            <span>Amount . . .</span>
+                            <input type="number" id="payAccountNum" required></input>
+                            <span>Recipient Account Number . . .</span>
                         </div>
                         <div class="account-details">
-                            <input type="number" id="inAmount" required></input>
-                            <span>Amount . . .</span>
-                        </div>
-                        <div class="account-details">
-                            <input type="number" id="inAmount" required></input>
-                            <span>Amount . . .</span>
+                            <input type="number" id="paySwiftCode" required></input>
+                            <span>Swift Code . . .</span>
                         </div>
                     </div>
 
                     <div class="bottom">
-                        <button id="submitBtn">Submit</button>
+                        <button id="submitBtn">Pay Now</button>
+                        <button id="cancelBtn">Cancel</button>
                     </div>
                 </div>
 
@@ -97,7 +175,7 @@
         </section>
 
         
-        <div id="form" class="active" >
+        <div id="form">
             <div class="body">
                 <input type="checkbox" id="chk" aria-hidden="true">
     
@@ -107,12 +185,22 @@
     
                         <div class="input-box">
                             <input type="text" id="signName" autocomplete="given-name" required>
-                            <span>Name & Surname...</span>
+                            <span>Name...</span>
+                        </div>
+
+                        <div class="input-box">
+                            <input type="text" id="signSurname" autocomplete="surname" required>
+                            <span>Surname...</span>
                         </div>
     
                         <div class="input-box">
                             <input type="number" id="signId" autocomplete="id" required>
                             <span>ID Number...</span>
+                        </div>
+
+                        <div class="input-box">
+                            <input type="email" id="signEmail" autocomplete="email" required>
+                            <span>Email...</span>
                         </div>
     
                         <div class="input-box">
@@ -140,12 +228,7 @@
     
                         <div class="input-box">
                             <input type="text" id="loginUsername" required>
-                            <span>Username...</span>
-                        </div>
-                        
-                        <div class="input-box">
-                            <input type="number" id="loginAccountNum" required>
-                            <span>Account Number...</span>
+                            <span>Username/Account Number</span>
                         </div>
     
                         <div class="input-box">
@@ -159,6 +242,31 @@
             </div>
         </div>
     </main>
+
+    <footer>
+        <ul>
+            <li>
+                <div class="a">
+                    <div class="icon"><i class='bx bxs-home' ></i></div>
+                    <div class="text">Home</div>
+                </div>
+            </li>
+            <li id="mainLi">
+                <div class="a">
+                    <div class="icon"><i class="ri-building-2-fill"></i></div>
+                </div>
+            </li>
+            <li>
+                <div class="a">
+                    <div class="icon">
+                        <i class="ri-logout-box-r-fill"></i>
+                    </div>
+                    <div class="text">Log Out</div>
+                </div>
+            </li>
+        </ul>
+        <div class="indicator"></div>
+    </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
     <script type="module" src="Customer.js"></script>
