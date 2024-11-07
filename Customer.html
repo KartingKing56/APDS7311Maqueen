@@ -15,7 +15,7 @@
 <body>
     <main>
 
-        <section id="home" style="display: flex;"  >
+        <section id="home" style="display: flex;" class="active" >
             <div class="body">
                 <div class="page active" style="display: flex;" >
                     <div class="top">
@@ -103,29 +103,43 @@
                         <ul>
                             <li>
                                 <div class="currency">
-                                    <select id="comboBox" name="comboBox" required="required">
+                                    <select id="currencyComboBox" name="currencyComboBox" required="required">
                                         <option value="" disabled selected></option>
-                                        <option value="Option 1">Sick Leave</option>
-                                        <option value="Option 2">Personal Time</option>
-                                        <option value="Option 3">Family Needs</option>
-                                        <option value="Option 4">Other</option>
+                                        <option value="USD">USD - US Dollar</option>
+                                        <option value="EUR">EUR - Euro</option>
+                                        <option value="GBP">GBP - British Pound</option>
+                                        <option value="JPY">JPY - Japanese Yen</option>
+                                        <option value="AUD">AUD - Australian Dollar</option>
+                                        <option value="CAD">CAD - Canadian Dollar</option>
+                                        <option value="CHF">CHF - Swiss Franc</option>
+                                        <option value="INR">INR - Indian Rupee</option>
+                                        <option value="CNY">CNY - Chinese Yuan</option>
+                                        <option value="MXN">MXN - Mexican Peso</option>
                                     </select>
                                     <span>Currency . . .</span>
                                 </div>
                             </li>
                             <li>
                                 <div class="provider">
-                                    <select id="comboBox" name="comboBox" required="required">
+                                    <select id="providerComboBox" name="providerComboBox" required="required">
                                         <option value="" disabled selected></option>
-                                        <option value="Option 1">Sick Leave</option>
-                                        <option value="Option 2">Personal Time</option>
-                                        <option value="Option 3">Family Needs</option>
-                                        <option value="Option 4">Other</option>
+                                        <option value="Visa">Visa</option>
+                                        <option value="HealthCare Inc.">HealthCare Inc.</option>
+                                        <option value="WellMed Services">WellMed Services</option>
+                                        <option value="FamilyCare Network">FamilyCare Network</option>
+                                        <option value="SecureMed">SecureMed</option>
+                                        <option value="HealthFirst">HealthFirst</option>
+                                        <option value="MediPlus">MediPlus</option>
+                                        <option value="TotalCare">TotalCare</option>
+                                        <option value="GlobalMed">GlobalMed</option>
+                                        <option value="CareNow">CareNow</option>
+                                        <option value="MediLink">MediLink</option>
                                     </select>
                                     <span>Provider . . .</span>
                                 </div>
                             </li>
                         </ul>
+                        
 
                         <div class="amount">
                             <input type="number" id="inAmount" required></input>
@@ -173,15 +187,14 @@
                 </div>
             </div>
         </section>
-
-        
-        <div id="form"  class="active">
+       
+        <div id="form" style="display: none;" >
             <div class="body">
                 <input type="checkbox" id="chk" aria-hidden="true">
     
                 <div class="top" id="signUpPage">
                     <form id="signUpForm">
-                        <label for="chk" aria-hidden="true">Sign Up!</label>
+                        <label for="chk" aria-hidden="true">Create Customer</label>
     
                         <div class="input-box">
                             <input type="text" id="signName" autocomplete="given-name" required>

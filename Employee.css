@@ -538,8 +538,137 @@ button:active {
 
 
 
+/* -------->     Main (Home: Header)     <------------ */
 
-/*      >>>     Body    <<< */
+
+
+
+
+
+
+
+
+#home .header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+    width: 100%;
+    height: 0px;
+    min-height: 0px;
+    overflow: hidden;
+    padding: 0px 0px;
+    opacity: 0;
+    transition: opacity 0.3s ease, 0.5s ease-out;
+}
+
+#home .header.active {
+    opacity: 1;
+    height: 150px;
+    min-height: 150px;
+    padding: 10px 15px;
+}
+
+#home .header h1 {
+    font-size: 2rem;
+    width: 450px;
+    margin-left: 5px;
+    border-bottom: 2px solid var(--black);
+}
+
+#home .header h3 {
+    font-size: 1.5rem;
+    font-weight: lighter;
+    margin-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+    width: 300px;
+}
+
+#home .header .input-box {
+    position: relative;
+    width: 65%;
+    margin: 15px auto 0px auto;
+    box-shadow: var(--shadow);
+    border-radius: 5px;
+}
+
+#home .header .input-box input {
+    padding: 15px 10px 10px 45px;
+    border: 2px solid var(--dark);
+    width: 100%;
+    color: var(--black);
+    font-weight: 300;
+    font-size: 1rem;
+    border-radius: 5px;
+    outline: none;
+    cursor: text;
+    transition: 0.5s ease;
+}
+
+#home .header .input-box span {
+    position: absolute;
+    left: 0;
+    padding: 15px 10px 10px 45px;
+    pointer-events: none;
+    font-weight: 300;
+    font-size: 1rem;
+    letter-spacing: 0.05rem;
+    color: var(--black);
+    transition: 0.5s ease;
+}
+
+#home .header .input-box input:focus::placeholder {
+    color: var(--black);
+}
+
+#home .header .input-box input:valid ~ span,
+#home .header .input-box input:focus ~ span {
+    color: var(--neon);
+    border: 2px solid var(--neon);
+    background: white;
+    transform: translate(20px, -12px);
+    border-radius: 3px;
+    font-size: 0.8rem;
+    padding: 0 8px;
+}
+
+#home .header .input-box i {
+    position: absolute;
+    top: 14px;
+    left: 10px;
+    width: 30px;
+    font-size: 1.2rem;
+    padding: 0px 15px 2px 0px;
+    font-weight: bold;
+    color: var(--dark);
+    border-right: 2px solid var(--dark);
+    transition: 0.3s ease;
+}
+
+#home .header .input-box input:valid ~ i,
+#home .header .input-box input:focus ~ i,
+#home .header .input-box input:hover ~ i {
+    color: var(--neon);
+    border-right: 2px solid var(--neon);
+}
+
+#home .header .input-box input:valid,
+#home .header .input-box input:focus,
+#home .header .input-box input:hover {
+    border: 2px solid var(--neon);
+}
+
+
+
+
+
+
+
+
+
+/* -------->     Main (Home: Body)      <------------ */
 
 
 
@@ -555,13 +684,13 @@ button:active {
     align-items: center;
     flex-direction: column;
     width: 100%;
-    height: calc(100vh - 110px);
+    height: calc(100vh - 285px);
+    padding: 10px;
+    padding-bottom: 0;
     background: var(--white);
-    border: 5px solid var(--white);
+    border-radius: 10px;
     box-shadow: var(--shadow);
-    border-radius: 2rem;
     overflow: hidden;
-    z-index: var(--lvl3);
 }
 
 #home .body .page {
@@ -583,207 +712,425 @@ button:active {
     transform: scale(1);
 }
 
-#home .body .page .top {
-    position: relative;
+#home .body .page .title .see-more {
     display: flex;
-    grid-template-columns: 1fr 30px 1fr;
-    justify-content: center; /* Align items at the top */
+    align-items: center;
+    justify-content: center;
+    width: 75px;
+    height: 25px;
+    gap: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--white);
+    background: var(--black);
+    border: 1px solid var(--white);
+    border-radius: 5px;
+    transition: 0.1s ease;
+}
+
+#home .body .page .title .see-more:hover,
+#home .body .page .title .see-more:active {
+    color: var(--neon);
+    border: 1px solid var(--neon);
+    background: var(--white);
+}
+
+#home .body .page .empty {
+    display: flex;
+    justify-content: center;
     align-items: center;
     width: 100%;
-    min-height: 100px;
+    height: 50px;
+}
+
+#home .body .page li {
+    display: grid;
+    grid-template-columns: 100px 1fr 20px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 150px;
+    min-height: 150px;
     padding: 10px 0;
-    background: var(--upDown);
-    border-radius: 60% / 30%;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    z-index: var(--lvl2) !important;
+    border-bottom: 1px solid var(--grey);
+    cursor: pointer;
+    transition: 0.1s ease;
 }
 
-#home .body .page .top h1 {
-    display: flex;
-    justify-content: center; /* Align items at the top */
-    align-items: center;
-    border-bottom: 1px solid black;
-    font-size: 1.9rem;
+#home .body .page li.inactive {
+    filter: grayscale(1);
 }
 
-#home .body .page .top i {
+#home .body .page li:hover .ri-arrow-right-s-line,
+#home .body .page li:active .ri-arrow-right-s-line {
+    color: var(--neon);
+    margin-left: 5px !important;
+}
+
+#home .body .page li .img {
     display: flex;
-    justify-content: center; /* Align items at the top */
+    justify-content: center;
     align-items: center;
+    width: 100px;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+#home .body .page li .img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#home .body .page li .details {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding-left: 15px;
+}
+
+#home .body .page li h1 {
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+#home .body .page li h3 {
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+#home .body .page li b {
+    font-weight: bold;
+    color: var(--neon);
+}
+
+#home .body .page li .flex-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+#home .body .page li .flex-box h5 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    font-size: 0.6rem;
+    font-weight: lighter;
+}
+
+#home .body .page li .price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+#home .body .page li .ri-arrow-right-s-line {
+    font-size: 1.5rem;
+    font-weight: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 20px;
+    transition: 0.1s ease;
+    transition-delay: 0.1s;
+}
+
+
+
+
+
+
+
+
+/* -------->     Main (Home: requestHistory)      <------------ */
+
+
+
+
+
+
+
+
+
+#home .body #requestHistory,
+#home .body #seeMoreApplications{
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
+}
+
+
+
+
+
+
+
+
+
+/* -------->     top      <------------ */
+
+
+
+
+
+
+
+
+
+#home .body #requestHistory .top {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+#home .body #requestHistory .top h3 {
+    font-size: 2rem;
+    letter-spacing: 2px;
+}
+
+
+
+
+
+
+
+
+/* -------->     middle      <------------ */
+
+
+
+
+
+
+
+
+
+#home .body .page .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 50px;
+    min-height: 50px;
+    padding: 0 10px;
+    color: var(--black);
+    border-bottom: 2px solid var(--black);
+}
+
+#home .body #seeMoreApplications .title {
+    display: grid;
+    grid-template-columns: 50px 1fr 50px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 50px;
+    min-height: 50px;
+    padding: 0 10px;
+    color: var(--black);
+    border-bottom: 2px solid var(--black);
+}
+
+#home .body .page .title .go-back {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+#home .body .page .title .go-back i {
+    font-size: 1.6rem;
+    transition: 0.3s ease;
+}
+
+#home .body .page .title .go-back i:hover {
+    scale: 1.5;
+    color: var(--neon);
+    cursor: pointer;
+}
+
+#home .body .page .title .see-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 75px;
+    height: 25px;
+    gap: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--white);
+    background: var(--black);
+    border: 1px solid var(--white);
+    border-radius: 5px;
+    transition: 0.1s ease;
+}
+
+#home .body .page .title .see-more:hover,
+#home .body .page .title .see-more:active {
+    color: var(--neon);
+    border: 1px solid var(--neon);
+    background: var(--white);
+}
+
+#home .body .page .title .ri-add-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 35px;
+    min-height: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    outline: none;
+    color: var(--black);
+    background: transparent;
+    border: 3px solid var(--black);
+    border-radius: 45% / 65%;
+    cursor: pointer;
+    transition: 0.1s ease-in-out;
+}
+
+#home .body .page .title .ri-add-line:hover, 
+#home .body .page .title .ri-add-line:active {
+    color: var(--neon);
+    border: 3px solid var(--neon);
+}
+
+#home .body #requestHistory p.no-leave,
+#home .body #seeMoreApplications p.no-leave {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    font-size: 1rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#home .body #requestHistory ul,
+#home .body #seeMoreApplications ul {
+    width: 95%;
+    padding: 0;
+    margin: 0;
+}
+
+#home .body #requestHistory ul li#headings,
+#home .body #seeMoreApplications ul li#headings {
+    height: 30px;
+    min-height: 30px;
+    margin-bottom: 10px;
+}
+
+#home .body #requestHistory li#headings h5,
+#home .body #seeMoreApplications li#headings h5 {
+    margin: 0;
+    text-align: center;
     font-size: 1.2rem;
 }
 
+#home .body #requestHistory ul li,
+#home .body #seeMoreApplications ul li {
+    display: grid;
+    grid-template-columns: 1fr 100px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: fit-content;
+    min-height: fit-content;
+    margin: 5px auto;
+    transform: scale(1);
+    transition: transform 0.5s ease;
+}
 
+#home .body #requestHistory ul li.active,
+#home .body #seeMoreApplications ul li.active {
+    transform: scale(1.05);
+    transition: transform 0.5s ease;
+    background: var(--upDown);
+    border-radius: 10px;
+}
 
-
-
-
-
-
-
-/*      >>>     Mddle    <<< */
-
-
-
-
-
-
-
-
-
-#home .body .page .middle{
+#home .body #requestHistory ul li .hidden,
+#home .body #seeMoreApplications ul li .hidden {
     display: flex;
-    width: 100%;
+    justify-content: flex-start;
+    align-items: flex-start;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    transition: 0.2s ease-in-out;
-}
-
-#home .body .page .middle .buttons {
-    display: flex;
-    width: 100%;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    gap: 10px;
-}
-
-#home .body .page .middle .buttons button {
-    display: flex;
-    height: 60px;
-    min-height: 60px;
-    width: 25%;
-    padding: 10px;
-}
-
-
-
-
-
-
-
-
-
-/*      >>>     Bottom(bank details)    <<< */
-
-
-
-
-
-
-
-
-#home .body .page .bottom {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-    padding: 10px;
-    z-index: var(--lvl2) !important;
-    bottom: 0;
-}
-
-#home .body .page .bottom .banking-details{
-    display: flex;
-    height: 150px;
-    min-height: 150px;
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    padding: 10px;
-    transition: 0.2s ease-in-out;
-}
-
-#home .body .page .bottom .banking-details .details{
-    height: 80%;
-    gap: 10px;
-}
-
-#home .body .page .bottom .banking-details .details h5{
+    width: calc(100% + 100px);
+    height: 100%;
+    max-height: 0;
+    background: var(--white);
+    border-top: 5px solid var(--neon);
     font-size: 1rem;
+    visibility: hidden;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease, opacity 0.5s ease, visibility 0.5s ease;
 }
 
-#home .body .page .bottom .banking-details ul{
-    display: flex;
-    width: 100%;
-    height: 75%;
-    flex-direction: row;
-    gap: 10px;
+/* Expanded hidden content: smoothly revealed */
+#home .body #requestHistory ul li.active .hidden,
+#home .body #seeMoreApplications ul li.active .hidden {
+    max-height: 500px; /* Adjust to accommodate the content */
+    opacity: 1;
+    visibility: visible;
+    z-index: var(--lvl5);
 }
 
-#home .body .page .bottom .banking-details ul li{
-    display: flex;
+#home .body #requestHistory ul li .type,
+#home .body #seeMoreApplications ul li .type {
     width: 100%;
-    height: 75%;
-    flex-direction: column;
-    padding: 10px;
+    text-align: left !important;
+    padding-left: 10px;
 }
 
+#home .body #requestHistory ul li:hover,
+#home .body #seeMoreApplications ul li:hover {
+    background: var(--upDown);
+    border-radius: 10px;
+    cursor: pointer;
+}
 
-
-
-
-
-
-
-
-/*      >>>     Bottom(payment receipts)    <<< */
-
-
-
-
-
-
-
-
-
-
-#home .body .page .bottom .payment-receipts {
+#home .body #requestHistory ul li .img,
+#home .body #seeMoreApplications ul li .img {
     display: flex;
-    width: 100%;
-    flex-direction: column;
+    text-align: center;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    transition: 0.2s ease-in-out;
-}
-
-#home .body .page .bottom .payment-receipts ul {
-    display: flex;
     width: 100%;
     height: 100%;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 10px;
-    gap: 15px;
-    overflow-y: auto;
 }
 
-#home .body .page .bottom .payment-receipts ul li{
-    display: flex;
-    width: 100%;
-    height: 75%;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    gap: 15px;
+#home .body #requestHistory ul li .img img {
+    display: block;
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
-#home .body .page .bottom .payment-receipts ul li button{
-    display: flex;
-    width: 100%;
-    height: 50%;
-    flex-direction: row;
-    gap: 15px;
-    padding: 10px;
+#home .body #requestHistory ul li .reason,
+#home .body #requestHistory ul li .start,
+#home .body #requestHistory ul li .end {
+    padding: 0 10px;
+    text-align: left;
+    font-size: 1rem;
+    margin: 0 0 !important;
 }
 
 
@@ -805,7 +1152,7 @@ button:active {
 
 
 
-#pay {
+#verify {
     gap: 10px;
 }
 
@@ -828,7 +1175,7 @@ button:active {
 
 
 
-#pay .body {
+#verify .body {
     position: relative;
     display: flex;
     align-items: center;
@@ -844,7 +1191,7 @@ button:active {
     z-index: var(--lvl3);
 }
 
-#pay .body .page {
+#verify .body .page {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -854,14 +1201,15 @@ button:active {
     opacity: 1;
     transform: scale(0.95);
     transition: opacity 0.3s ease, transform 0.5s ease-out;
+    overflow-y: auto;
 }
 
-#pay .body .page.active {
+#verify .body .page.active {
     opacity: 1;
     transform: scale(1);
 }
 
-#pay .body .page .top {
+#verify .body .page .top {
     position: relative;
     display: flex;
     grid-template-columns: 1fr 30px 1fr;
@@ -877,7 +1225,7 @@ button:active {
     z-index: var(--lvl2) !important;
 }
 
-#pay .body .page .top h1 {
+#verify .body .page .top h1 {
     display: flex;
     justify-content: center; /* Align items at the top */
     align-items: center;
@@ -885,38 +1233,10 @@ button:active {
     font-size: 1.9rem;
 }
 
-#pay .body .page .top i {
+#verify .body .page .top i {
     display: flex;
     justify-content: center; /* Align items at the top */
     align-items: center;
-    font-size: 1.2rem;
-}
-
-#pay .body .page .bottom {
-    display: flex;
-    justify-content: flex-end; /* Align items at the top */
-    align-items: flex-end;
-    width: 100%;
-    padding: 10px;
-    z-index: var(--lvl2) !important;
-    bottom: 0;
-}
-
-#pay .body #accountInformationPage .bottom {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    padding: 10px;
-    z-index: var(--lvl2) !important;
-    bottom: 0;
-}
-
-#pay .body .page .bottom button {
-    width: 150px;
-    min-width: 150px;
-    height: 50px;
-    min-height: 50px;
     font-size: 1.2rem;
 }
 
@@ -938,7 +1258,7 @@ button:active {
 
 
 
-#pay .body .page .middle{
+#verify .body .page .middle{
     display: flex;
     height: 70%;
     width: 100%;
@@ -949,64 +1269,48 @@ button:active {
     transition: 0.2s ease-in-out;
 }
 
-#pay .body .page .middle ul{
+#verify .body .page .middle ul{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+#verify .body .page .middle ul li{
     display: flex;
     width: 100%;
     flex-direction: row;
-    padding: 10px;
-    margin-left: 10px;
-}
-
-#pay .body .page .middle ul li{
-    position: relative;
-    width: 50%;
-    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     padding: 0 10px;
     gap: 10px;
     margin-top: 10px;
     transition: 0.2s ease-in-out;
 }
 
-#pay .body .page .middle .currency {
-    position: relative;
-    width: 100%;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 0 10px;
-    gap: 10px;
-    transition: 0.2s ease-in-out;
+#verify .body .page .middle ul li button{
+    height: 100%;
 }
 
-#pay .body .page .middle .provider {
+#verify .body .page .middle ul li .input-box {
     position: relative;
     width: 100%;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 0 10px;
-    gap: 10px;
-    transition: 0.2s ease-in-out;
-}
-
-#pay .body .page .middle .amount {
-    position: relative;
-    width: 100%;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 0 10px;
+    padding-right: 0px;
     margin-left: 50px;
-    gap: 10px;
     transition: 0.2s ease-in-out;
 }
 
-#pay .body .page .middle .amount input{
+#verify .body .page .middle ul li .input-box input{
     height: 50px;
     min-height: 50px;
-    width: 50%;
+    width: 100%;
     padding: 10px;
     align-items: center;
     justify-content: center;
@@ -1018,7 +1322,7 @@ button:active {
     transition: 0.2s ease-in-out;
 }
 
-#pay .body .page .middle .amount span{
+#verify .body .page .middle ul li .input-box span{
     position: absolute;
     left: 0;
     padding: 10px;
@@ -1028,8 +1332,8 @@ button:active {
     transition: 0.2s ease-in-out;
 }
 
-#pay .body .page .middle .amount input:valid ~ span,
-#pay .body .page .middle .amount input:focus ~ span{
+#verify .body .page .middle ul li .input-box input:valid ~ span,
+#verify .body .page .middle ul li .input-box input:focus ~ span{
     color: var(--neon);
     transform: translateX(15px) translateY(-10px);
     scale: 0.8;
@@ -1039,67 +1343,9 @@ button:active {
     letter-spacing: 0.2rem;
 }
 
-#pay .body .page .middle .amount input:focus,
-#pay .body .page .middle .amount input:valid {
+#verify .body .page .middle ul li .input-box input:focus,
+#verify .body .page .middle ul li .input-box input:valid {
     border: 1px solid var(--neon);
-}
-
-#pay .body .page .middle ul li select{
-    height: 30px;
-    min-height: 40px;
-    width: 75%;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-size: 1rem;
-    border: 0px;
-    border-bottom: 1px solid var(--black);
-    transition: 0.2s ease-in-out;
-}
-
-#pay .body .page .middle ul li span{
-    position: absolute;
-    left: 0;
-    padding: 10px;
-    margin-bottom: 10px;
-    padding-bottom: 40px;
-    padding-left: 20px;
-    pointer-events: none;
-    font-size: 1rem;
-    transition: 0.2s ease-in-out;
-}
-
-#pay .body .page .middle ul li select:focus ~ span,
-#pay .body .page .middle ul li select:valid ~ span {
-    color: var(--neon);
-    transform: translateX(15px) translateY(-15px);
-    scale: 0.8;
-    padding: 0 10px;
-    background: var(--white);
-    color: var(--neon);
-    letter-spacing: 0.2rem;
-}
-
-#pay .body .page .middle ul li select:focus,
-#pay .body .page .middle ul li select:valid {
-    outline: none;
-    border-color: var(--neon);
-}
-
-#pay .body .page .middle ul li select:hover {
-    cursor: pointer;
-}
-
-#pay .body .page .middle ul li select option{
-    font-size: 1rem;
-    flex-direction: row;
-    transition: 0.2s ease-in-out;
-}
-
-#pay .body .page .middle ul li select option:hover{
-    background: rgba(0, 153, 255, 0.2);
-    color: black;
 }
 
 
@@ -1120,15 +1366,13 @@ button:active {
 
 
 
-#pay .body #accountInformationPage .middle {
+#verify .body #accountInformationPage .middle {
     margin-top: 10px;
-    align-items: center;
-    justify-content: center;
 }
 
-#pay .body .page .middle .account-details {
+#verify .body .page .middle .account-details {
     position: relative;
-    width: 60%;
+    width: 100%;
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -1138,10 +1382,10 @@ button:active {
     transition: 0.2s ease-in-out;
 }
 
-#pay .body .page .middle .account-details input{
+#verify .body .page .middle .account-details input{
     height: 50px;
     min-height: 50px;
-    width: 100%;
+    width: 50%;
     padding: 10px;
     align-items: center;
     justify-content: center;
@@ -1153,7 +1397,7 @@ button:active {
     transition: 0.2s ease-in-out;
 }
 
-#pay .body .page .middle .account-details span{
+#verify .body .page .middle .account-details span{
     position: absolute;
     left: 0;
     padding: 10px;
@@ -1163,8 +1407,8 @@ button:active {
     transition: 0.2s ease-in-out;
 }
 
-#pay .body .page .middle .account-details input:valid ~ span,
-#pay .body .page .middle .account-details input:focus ~ span{
+#verify .body .page .middle .account-details input:valid ~ span,
+#verify .body .page .middle .account-details input:focus ~ span{
     color: var(--neon);
     transform: translateX(15px) translateY(-10px);
     scale: 0.8;
@@ -1174,9 +1418,46 @@ button:active {
     letter-spacing: 0.2rem;
 }
 
-#pay .body .page .middle .account-details input:focus,
-#pay .body .page .middle .account-details input:valid {
+#verify .body .page .middle .account-details input:focus,
+#verify .body .page .middle .account-details input:valid {
     border: 1px solid var(--neon);
+}
+
+
+
+
+
+
+
+
+/*      >>>     Bottom     <<<*/
+
+
+
+
+
+
+
+
+
+#verify .body .page .bottom {
+    display: flex;
+    justify-content: center; /* Align items at the top */
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    gap: 20px;
+    z-index: var(--lvl2) !important;
+    bottom: 0;
+}
+
+#verify .body .page .bottom button {
+    width: 200px;
+    min-width: 200px;
+    height: 50px;
+    max-height: 50px;
+    margin-top: 10px;
+    font-size: 1.2rem;
 }
 
 
