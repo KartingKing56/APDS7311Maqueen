@@ -14,7 +14,7 @@
 </head>
 <body>
     <main>
-        <section id="home" class="active">
+        <section id="home" style="display: none;">
             <div class="header active">
                 <h1>Welcome</h1>
                 <h3>Name and Surname</h3>
@@ -56,7 +56,7 @@
 
                     <div class="title">
                         <h3>Approved Payments:</h3>
-                        <div class="see-more" id="approvedPayments">View All <i class="ri-arrow-right-s-line"></i></div>
+                        <div class="see-more" id="moreApproved">View All <i class="ri-arrow-right-s-line"></i></div>
                     </div>
 
                     <ul id="approvedPayments">
@@ -85,7 +85,6 @@
                     <div class="title">
                         <div class="go-back"><i class="ri-arrow-left-s-line"></i></div>
                         <h1>Payments:</h1>
-                        <i class="ri-add-line"></i>
                     </div>
 
                     <ul>
@@ -177,14 +176,10 @@
                         <button id="cancelBtn">Cancel</button>
                     </div>
                 </div>
-
-                <div class="page" style="display: none;">
-
-                </div>
             </div>
         </section>
 
-        <div id="form" style="display: none;">
+        <div id="form"  class="active">
             <div class="body">
                 <input type="checkbox" id="chk" aria-hidden="true">
     

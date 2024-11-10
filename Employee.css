@@ -157,10 +157,9 @@ button {
     transition: 0.2s ease-in-out;
 }
 
-button:hover,
-button:active {
-    background: var(--neon);
+button:hover, button:active {
     transform: scale(0.95);
+    background: var(--neon);
 }
 
 .animate-bg {
@@ -310,8 +309,8 @@ button:active {
     box-shadow: var(--shadow);
     border: 3px solid var(--white);
     width: 350px;
-    height: 500px;
-    min-height: 500px;
+    height: 510px;
+    min-height: 510px;
     overflow: hidden;
     border-radius: 10px;
 }
@@ -341,7 +340,7 @@ button:active {
 }
 
 #form .body .top label{
-    margin-bottom: 5px;
+    margin-bottom: 22px;
 }
 
 #form .body .top button {
@@ -400,7 +399,6 @@ button:active {
     justify-content: center;
     display: block;
     color: var(--dark);
-    color: var(--white);
     font-size: 1em;
     font-weight: bold;
     margin-top: 20px;
@@ -416,6 +414,7 @@ button:active {
 #form .body .bottom button:active {
     color: var(--neon);
     border: 2px solid var(--neon);
+    background: var(--white);
     transform: scale(0.95);
 }
 
@@ -850,7 +849,7 @@ button:active {
 
 
 
-/* -------->     Main (Home: requestHistory)      <------------ */
+/* -------->     Main (Home: approvalHistory)      <------------ */
 
 
 
@@ -860,8 +859,8 @@ button:active {
 
 
 
-#home .body #requestHistory,
-#home .body #seeMoreApplications{
+#home .body #approvalHistory,
+#home .body #seeMorePayments{
     display: flex;
     width: 100%;
     justify-content: flex-start;
@@ -890,14 +889,14 @@ button:active {
 
 
 
-#home .body #requestHistory .top {
+#home .body #approvalHistory .top {
     display: flex;
     width: 100%;
     justify-content: center;
     align-items: center;
 }
 
-#home .body #requestHistory .top h3 {
+#home .body #approvalHistory .top h3 {
     font-size: 2rem;
     letter-spacing: 2px;
 }
@@ -931,7 +930,7 @@ button:active {
     border-bottom: 2px solid var(--black);
 }
 
-#home .body #seeMoreApplications .title {
+#home .body #seeMorePayments .title {
     display: grid;
     grid-template-columns: 50px 1fr 50px;
     align-items: center;
@@ -1010,8 +1009,8 @@ button:active {
     border: 3px solid var(--neon);
 }
 
-#home .body #requestHistory p.no-leave,
-#home .body #seeMoreApplications p.no-leave {
+#home .body #approvalHistory p.no-payments,
+#home .body #seeMorePayments p.no-payments {
     display: flex;
     width: 100%;
     justify-content: flex-start;
@@ -1022,29 +1021,29 @@ button:active {
     padding-bottom: 10px;
 }
 
-#home .body #requestHistory ul,
-#home .body #seeMoreApplications ul {
+#home .body #approvalHistory ul,
+#home .body #seeMorePayments ul {
     width: 95%;
     padding: 0;
     margin: 0;
 }
 
-#home .body #requestHistory ul li#headings,
-#home .body #seeMoreApplications ul li#headings {
+#home .body #approvalHistory ul li#headings,
+#home .body #seeMorePayments ul li#headings {
     height: 30px;
     min-height: 30px;
     margin-bottom: 10px;
 }
 
-#home .body #requestHistory li#headings h5,
-#home .body #seeMoreApplications li#headings h5 {
+#home .body #approvalHistory li#headings h5,
+#home .body #seeMorePayments li#headings h5 {
     margin: 0;
     text-align: center;
     font-size: 1.2rem;
 }
 
-#home .body #requestHistory ul li,
-#home .body #seeMoreApplications ul li {
+#home .body #approvalHistory ul li,
+#home .body #seeMorePayments ul li {
     display: grid;
     grid-template-columns: 1fr 100px;
     justify-content: center;
@@ -1057,16 +1056,16 @@ button:active {
     transition: transform 0.5s ease;
 }
 
-#home .body #requestHistory ul li.active,
-#home .body #seeMoreApplications ul li.active {
+#home .body #approvalHistory ul li.active,
+#home .body #seeMorePayments ul li.active {
     transform: scale(1.05);
     transition: transform 0.5s ease;
     background: var(--upDown);
     border-radius: 10px;
 }
 
-#home .body #requestHistory ul li .hidden,
-#home .body #seeMoreApplications ul li .hidden {
+#home .body #approvalHistory ul li .hidden,
+#home .body #seeMorePayments ul li .hidden {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -1084,30 +1083,30 @@ button:active {
 }
 
 /* Expanded hidden content: smoothly revealed */
-#home .body #requestHistory ul li.active .hidden,
-#home .body #seeMoreApplications ul li.active .hidden {
+#home .body #approvalHistory ul li.active .hidden,
+#home .body #seeMorePayments ul li.active .hidden {
     max-height: 500px; /* Adjust to accommodate the content */
     opacity: 1;
     visibility: visible;
     z-index: var(--lvl5);
 }
 
-#home .body #requestHistory ul li .type,
-#home .body #seeMoreApplications ul li .type {
+#home .body #approvalHistory ul li .type,
+#home .body #seeMorePayments ul li .type {
     width: 100%;
     text-align: left !important;
     padding-left: 10px;
 }
 
-#home .body #requestHistory ul li:hover,
-#home .body #seeMoreApplications ul li:hover {
+#home .body #approvalHistory ul li:hover,
+#home .body #seeMorePayments ul li:hover {
     background: var(--upDown);
     border-radius: 10px;
     cursor: pointer;
 }
 
-#home .body #requestHistory ul li .img,
-#home .body #seeMoreApplications ul li .img {
+#home .body #approvalHistory ul li .img,
+#home .body #seeMorePayments ul li .img {
     display: flex;
     text-align: center;
     align-items: center;
@@ -1116,7 +1115,7 @@ button:active {
     height: 100%;
 }
 
-#home .body #requestHistory ul li .img img {
+#home .body #approvalHistory ul li .img img {
     display: block;
     width: 75px;
     height: 75px;
@@ -1124,9 +1123,9 @@ button:active {
     border-radius: 50%;
 }
 
-#home .body #requestHistory ul li .reason,
-#home .body #requestHistory ul li .start,
-#home .body #requestHistory ul li .end {
+#home .body #approvalHistory ul li .reason,
+#home .body #approvalHistory ul li .start,
+#home .body #approvalHistory ul li .end {
     padding: 0 10px;
     text-align: left;
     font-size: 1rem;

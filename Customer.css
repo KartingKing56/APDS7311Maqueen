@@ -157,10 +157,9 @@ button {
     transition: 0.2s ease-in-out;
 }
 
-button:hover,
-button:active {
-    background: var(--neon);
+button:hover, button:active {
     transform: scale(0.95);
+    background: var(--neon);
 }
 
 .animate-bg {
@@ -310,8 +309,8 @@ button:active {
     box-shadow: var(--shadow);
     border: 3px solid var(--white);
     width: 350px;
-    height: 500px;
-    min-height: 500px;
+    height: 510px;
+    min-height: 510px;
     overflow: hidden;
     border-radius: 10px;
 }
@@ -341,7 +340,7 @@ button:active {
 }
 
 #form .body .top label{
-    margin-bottom: 5px;
+    margin-bottom: 22px;
 }
 
 #form .body .top button {
@@ -400,7 +399,6 @@ button:active {
     justify-content: center;
     display: block;
     color: var(--dark);
-    color: var(--white);
     font-size: 1em;
     font-weight: bold;
     margin-top: 20px;
@@ -416,6 +414,7 @@ button:active {
 #form .body .bottom button:active {
     color: var(--neon);
     border: 2px solid var(--neon);
+    background: var(--white);
     transform: scale(0.95);
 }
 
@@ -1052,7 +1051,7 @@ button:active {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    font-size: 1rem;
+    font-size: 0.8rem;
     border: 0px;
     border-bottom: 1px solid var(--black);
     transition: 0.2s ease-in-out;
