@@ -11,7 +11,8 @@ Likwa Junior: ST10132139
 Luwano Casby: ST10069127
 
 Github Link: https://github.com/KartingKing56/APDS7311Maqueen
-Video Link: https://youtu.be/ztKDig4im3w
+Sameer Link: https://youtu.be/ztKDig4im3w
+Likwa Link: https://youtu.be/zJ99PBQVtjI
 
 Roles: 
 Overall planner and other attack defences, linking GitHub with CircleCI and SonarQube – Davin
