@@ -45,6 +45,28 @@ const sslOptions = {
     cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem')),
 };
 
+// Define regex patterns
+const patterns = {
+    name: /^[a-zA-Z\s]{1,50}$/,
+    surname: /^[a-zA-Z\s]{1,50}$/,
+    idNumber: /^\d{13}$/, // South African ID format example
+    email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    accountNumber: /^\d{10,12}$/, // Example account number format
+    password: /^[\w@#$%^&+=]{8,20}$/, // Alphanumeric with special characters
+    currency: /^[A-Z]{3}$/, // ISO currency code format
+    provider: /^[a-zA-Z\s]{1,50}$/,
+    amount: /^\d+(\.\d{1,2})?$/,
+    recipientName: /^[a-zA-Z\s]{1,100}$/,
+    recipientBank: /^[a-zA-Z\s]{1,100}$/,
+    recipieantAccount: /^\d{10,12}$/,
+    swiftCode: /^[A-Z0-9]{8,11}$/,
+};
+
+function validateInput(field, value) {
+    const regex = patterns[field];
+    return regex ? regex.test(value) : false;
+}
+
 // Signup route (server-side method)
 router.post('/signup', async (req, res) => {
     try {
@@ -53,6 +75,13 @@ router.post('/signup', async (req, res) => {
         if (!name || !surname || !idNumber || !email || !accountNumber || !password) {
             return res.status(400).json({ message: 'Please provide all required fields: name, surname, idNumber, email, accountNumber, and password.' });
         }
+
+        if (!validateInput('name', name) || !validateInput('surname', surname) ||
+        !validateInput('idNumber', idNumber) || !validateInput('email', email) ||
+        !validateInput('accountNumber', accountNumber) || !validateInput('password', password)) 
+        {
+            return res.status(400).json({ message: 'Invalid input format.' });
+        }   
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -224,6 +253,14 @@ router.post('/addPayment', async (req, res) => {
         recipientAccount, swiftCode, date, status, customerId } = req.body;
 
     try {
+
+        if (!validateInput('currency', currency) || !validateInput('provider', provider) ||
+            !validateInput('amount', amount) || !validateInput('recipientName', recipientName) ||
+            !validateInput('recipientBank', recipientBank) || !validateInput('recipieantAccount', recipieantAccount) ||
+            !validateInput('swiftCode', swiftCode)) {
+            return res.status(400).json({ message: 'Invalid input format.' });
+        }
+        
         const paymentsCollection = db.collection('payments');
 
         // Define the payment document

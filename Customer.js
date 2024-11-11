@@ -32,7 +32,13 @@ let myData;
 
 
 
-
+// Regex patterns
+const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // At least 8 chars, 1 letter, and 1 number
+const idRegex = /^\d{10}$/; // Example ID validation (10-digit number)
+const accountNumberRegex = /^\d{8,12}$/; // 8 to 12 digit account number
+const currencyRegex = /^[A-Z]$/; // Currency codes like USD, EUR
+const amountRegex = /^\d+(\.\d{1,2})?$/; // Validates up to 2 decimal points
 
 
 
@@ -473,9 +479,25 @@ async function handleSignup(event) {
     const signPassword = document.getElementById('signPassword').value;
     const signConfPassword = document.getElementById('signConfPassword').value;
 
-    // Validate password and confirm password
+    // Validate inputs
+    if (!emailRegex.test(signEmail)) {
+        alert("Invalid email format.");
+        return;
+    }
+    if (!idRegex.test(signId)) {
+        alert("Invalid ID format.");
+        return;
+    }
+    if (!accountNumberRegex.test(signAccount)) {
+        alert("Invalid account number format.");
+        return;
+    }
+    if (!passwordRegex.test(signPassword)) {
+        alert("Invalid password format.");
+        return;
+    }
     if (signPassword !== signConfPassword) {
-        alert('Passwords do not match');
+        alert("Passwords do not match.");
         return;
     }
 
@@ -521,6 +543,11 @@ async function handleLogin() {
     const loginPassword = document.getElementById('loginPassword').value;
 
     const homePage = document.getElementById("home");
+
+    if (!emailRegex.test(loginName) && !accountNumberRegex.test(loginName)) {
+        alert("Invalid email or account number.");
+        return;
+    }
 
     // Send the login credentials to the server for verification
     try {
@@ -626,13 +653,7 @@ function paymentsNavigation() {
         provider = providerBox.value;
         amount = amountInput.value;
 
-        let valid = true; // Track if all validations pass
 
-        // Currency Validation
-        if (!currency.match(/^[a-zA-Z\s]+$/)) {
-            alert("Please select a valid currency (letters and spaces only).");
-            valid = false;
-        }
 
         // Provider Validation
         if (!provider.match(/^[a-zA-Z\s]+$/)) {
@@ -641,18 +662,14 @@ function paymentsNavigation() {
         }
 
         // Amount Validation
-        if (!amount.match(/^\d+(\.\d{1,2})?$/)) {
-            alert("Please enter a valid amount (up to two decimal places).");
-            valid = false;
+        if (!amountRegex.test(amount)) {
+            alert("Invalid amount.");
+            return;
         }
 
-        // Only proceed if all validations are successful
-        if (valid) {
+        activateHTML(detailsPage, accountInfoPage);
 
-            activateHTML(detailsPage, accountInfoPage);
-
-            window.history.pushState({ page: "pay", action: "info" }, '', "");
-        }
+        window.history.pushState({ page: "pay", action: "info" }, '', "");
     });
 
     cancelBtn.addEventListener('click', () => {
