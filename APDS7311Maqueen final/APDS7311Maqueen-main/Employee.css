@@ -1,0 +1,1655 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    font-family: 'SF Pro Display', 'SF Mono';
+    text-decoration: none;
+    scroll-behavior: smooth;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none; 
+    -ms-user-select: none; 
+}
+
+*::-webkit-scrollbar {
+    display: none;
+    scroll-behavior: smooth;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+    box-shadow: 0 0 0 1000px white inset;
+    -webkit-text-fill-color: #000; /* Change the text color if needed */
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Hide arrows in input number for Firefox */
+input[type=number] {
+    appearance: text;
+    -webkit-appearance: none; /* Chrome, Safari, newer versions of Opera */
+    -moz-appearance: textfield;    /* Firefox */
+    appearance: none;         /* Standard syntax */
+}
+
+input[type="file"] {
+    opacity: 0;
+}
+
+/* This removes the default calendar and time icons in Chrome */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+
+/* Ensures all specified inputs do not show default appearance */
+input[type="date"],
+input[type="time"] {
+    -webkit-appearance: none; /* Chrome, Safari, newer versions of Opera */
+    -moz-appearance: none;    /* Firefox */
+    appearance: none;         /* Standard syntax */
+}
+
+.input-box .date,
+.input-box textarea::placeholder,
+.input-box select::placeholder {
+    color: transparent;
+    font-size: 0.8rem;
+}
+
+:root {
+    /* ====>  Colour variables  <==== */
+    --rgba-white: 255,255,255;
+    --white: #fbfffe;
+    --light: #c2ffe6;
+    --grey: #eaf7f1d7;
+    --neon: #00ffbf;
+    --dark: #003d26;
+    --black: #00140a;
+    --rgba-black: 0,0,0;
+    --gradient: linear-gradient(27deg, var(--dark) 0%, var(--neon) 90%);
+    --upDown: linear-gradient(0deg, var(--light) -25%, var(--neon) 100%);
+
+    /* ====>  Box Shadow variables  <==== */
+    --outset: 8px 8px 10px -1px var(--dark),
+    -5px -5px 10px -1px var(--light);
+    --inset: inset 8px 8px 10px -8px var(--light),
+    inset -5px -5px 8px -7px var(--light);
+    --shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    --shadow2: 2px 1px 10px var(l);
+
+    /* ====>  Z-Index variables  <==== */
+    --lvl1: 1;
+    --lvl2: 10;
+    --lvl3: 100;
+    --lvl4: 1000;
+    --lvl5: 10000;
+    --loader: 100000;
+}
+
+html, body {
+    height: 100%;
+    min-height: 100%;
+    width: 100%;
+    min-width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: var(--light);
+}
+
+main {
+    width: 100%;
+    min-width: 100%;
+    flex: 1;
+    /* margin-bottom: 65px; Match the height of footer */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+    background: var(--light);
+    position: relative;
+}
+
+main section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 100%;
+    height: auto; /* Change from height: 100% to auto */
+    padding: 15px;
+    opacity: 0;
+    transform: scale(0.9);
+    z-index: var(--lvl1);
+    transition: opacity 0.3s ease-in, transform 0.5s ease-out;
+}
+
+main section.active {
+    opacity: 1;
+    transform: scale(1);
+    z-index: var(--lvl2);
+}
+
+button {
+    position: relative;
+    display: flex;
+    justify-content: center; /* Align items at the top */
+    align-items: center;
+    width: 70px;
+    min-height: 20px;
+    gap: 10px;
+    padding: 10px;
+    margin-right: 10px;
+    z-index: var(--lvl2) !important;
+    border-radius: 16px;
+    border: 1px solid rgba(var(--rgba-black), 0.3);
+    background: var(--white);
+    transform: scale(1);
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+button:hover, button:active {
+    transform: scale(0.95);
+    background: var(--neon);
+}
+
+.animate-bg {
+    z-index: 0;
+}
+
+.animate-bg div {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: transparent;
+    border: 6px solid var(--white);
+    z-index: 1;
+    opacity: 0;
+}
+
+.animate-bg div:nth-child(1) {
+    top: 90%;
+    left: 10%;
+    animation: bg 10s linear infinite;
+    animation-delay: 3s;
+}
+
+.animate-bg div:nth-child(2) {
+    top: 67%;
+    left: 50%;
+    animation: bg 12s linear infinite;
+    animation-delay: 2s;
+}
+
+.animate-bg div:nth-child(3) {
+    top: 10%;
+    left: 80%;
+    animation: bg 9s linear infinite;
+    animation-delay: 1s;
+}
+
+.animate-bg div:nth-child(4) {
+    top: 5%;
+    left: 7%;
+    animation: bg 10s linear infinite;
+}
+
+.animate-bg div:nth-child(5) {
+    top: 90%;
+    left: 85%;
+    animation: bg 8s linear infinite;
+    animation-delay: 1s;
+}
+
+.animate-bg div:nth-child(6) {
+    top: 50%;
+    left: 40%;
+    animation: bg 15s linear infinite;
+    animation-delay: 6s;
+}
+
+.animate-bg div:nth-child(7) {
+    top: 65%;
+    left: 0%;
+    animation: bg 13s linear infinite;
+    animation-delay: 3s;
+}
+
+.animate-bg div:nth-child(8) {
+    top: 45%;
+    left: 65%;
+    animation: bg 10s linear infinite;
+    animation-delay: 1s;
+}
+
+.animate-bg div:nth-child(9) {
+    top: 12%;
+    left: 45%;
+    animation: bg 9s linear infinite;
+    animation-delay: 2s;
+}
+
+.animate-bg div:nth-child(10) {
+    top: 40%;
+    left: 12%;
+    animation: bg 11s linear infinite;
+    animation-delay: 3s;
+}
+
+@keyframes bg {
+    0% {
+        transform: scale(0) translateY(0) rotate(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.3) translateY(-90px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+
+
+
+
+
+
+
+
+/* -----------------------------         Sign Up & Log In         ------------------------------------ */
+
+
+
+
+
+
+
+
+
+
+#form {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--upDown);
+    width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden;
+    border-radius: 10px;
+    z-index: 1;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: 0.2s ease-in-out;
+}
+
+#form.active {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 10000;
+}
+
+#form .body {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--white);
+    box-shadow: var(--shadow);
+    border: 3px solid var(--white);
+    width: 350px;
+    height: 510px;
+    min-height: 510px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+#form #chk {
+    display: none;
+}
+
+#form .body .top {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#form .body label {
+    color: var(--black);
+    font-size: 1.5rem;
+    justify-content: center;
+    display: flex;
+    margin: 10px auto 30px auto;
+    font-weight: bold;
+    white-space: nowrap;
+    cursor: pointer;
+    transform: scale(0.8);
+    transition: .5s ease-in-out;
+}
+
+#form .body .top label{
+    margin-bottom: 22px;
+}
+
+#form .body .top button {
+    width: 60%;
+    height: 40px;
+    margin: 10px auto;
+    justify-content: center;
+    align-items: center;
+    display: block;
+    color: var(--dark);
+    background: transparent;
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 10px;
+    outline: none;
+    border: 2px solid var(--dark);
+    border-radius: 5px;
+    transform: scale(1);
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+#form .body .top button:hover, 
+#form .body .top button:active {
+    color: var(--neon);
+    text-shadow: var(--shadow2);
+    border: 2px solid var(--neon);
+    background: var(--white);
+    transform: scale(0.95);
+}
+
+#form .body .bottom {
+    background: var(--upDown);
+    position: absolute;
+    width: 100%;
+    height: 460px;
+    bottom: 0;
+    border-radius: 50% / 10%;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    transform: translateY(0px);
+    transition: 0.8s ease-in-out;
+    padding: 10px;
+    z-index: 10;
+}
+
+#form .body .bottom label {
+    color: var(--white);
+    transform: scale(1);
+}
+
+#form .body .bottom button {
+    width: 60%;
+    height: 40px;
+    margin: 10px auto;
+    justify-content: center;
+    display: block;
+    color: var(--dark);
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 20px;
+    outline: none;
+    border: 2px solid var(--dark);
+    border-radius: 5px;
+    transform: scale(1);
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+#form .body .bottom button:hover, 
+#form .body .bottom button:active {
+    color: var(--neon);
+    border: 2px solid var(--neon);
+    background: var(--white);
+    transform: scale(0.95);
+}
+
+#chk:checked ~ #logInPage {
+    transform: translateY(410px);
+}
+
+#chk:checked ~ #logInPage label {
+    transform: scale(0.8);
+    margin: 0px auto 30px auto;
+}
+
+#chk:checked ~ #signUpPage label {
+    transform: scale(1);
+    color: var(--neon);
+}
+
+/* Updated input-box styling to adjust height and improve readability */
+#form .body .input-box {
+    position: relative;
+    width: 75%;
+    margin: 15px auto 0px auto;
+    border-radius: 5px;
+}
+
+#form .body .input-box input,
+#form .body .input-box select {
+    height: 35px; /* Adjusted height for better alignment */
+    padding: 8px 10px 8px 40px; /* Adjusted padding for readability */
+    font-size: 0.85rem; /* Smaller font size to maintain readability */
+    border: 1px solid var(--dark);
+    width: 100%;
+    color: var(--black);
+    font-weight: 300;
+    border-radius: 5px;
+    outline: none;
+    cursor: text;
+    transition: 0.5s ease;
+}
+
+#form .body .input-box span {
+    position: absolute;
+    left: 0px; /* Adjusted for consistency */
+    padding: 8px 10px 10px 40px;
+    padding-left: 10px;
+    pointer-events: none;
+    font-weight: 300;
+    font-size: 1rem;
+    letter-spacing: 0.05rem;
+    color: var(--black);
+    transition: 0.5s ease;
+}
+
+/* For phone number and select field spans */
+#form .body .input-box input:valid ~ span,
+#form .body .input-box input:focus ~ span,
+#form .body .input-box select:valid ~ span,
+#form .body .input-box select:focus ~ span {
+    color: var(--neon);
+    background: var(--white);
+    transform: translate(20px, -5px); /* Same as other inputs */
+    border-radius: 3px;
+    font-size: 0.8rem;
+    padding: 0 8px;
+}
+
+/* Ensure icons are vertically centered in input boxes */
+#form .body .input-box i {
+    position: absolute;
+    top: 50%; /* Align icon vertically */
+    left: 10px; /* Adjust this value as needed */
+    transform: translateY(-50%); /* Center the icon */
+    font-size: 1.2rem;
+    color: var(--dark);
+    padding-right: 5px;
+    border-right: 2px solid var(--dark);
+    transition: 0.3s ease;
+}
+
+#form .body .input-box input:valid ~ i,
+#form .body .input-box input:focus ~ i,
+#form .body .input-box input:hover ~ i {
+    color: var(--neon);
+    border-right: 2px solid var(--neon);
+}
+
+#form .body .input-box input:valid,
+#form .body .input-box input:focus,
+#form .body .input-box input:hover {
+    border: 2px solid var(--neon);
+}
+
+
+
+
+
+
+
+
+
+/* -----------------------------         Main (Menu)         ------------------------------------ */
+
+
+
+
+
+
+
+
+
+#home {
+    gap: 10px;
+}
+
+
+
+
+
+
+
+
+
+/* -------->     Main (Home: Header)     <------------ */
+
+
+
+
+
+
+
+
+
+#home .header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+    width: 100%;
+    height: 0px;
+    min-height: 0px;
+    overflow: hidden;
+    padding: 0px 0px;
+    opacity: 0;
+    transition: opacity 0.3s ease, 0.5s ease-out;
+}
+
+#home .header.active {
+    opacity: 1;
+    height: 150px;
+    min-height: 150px;
+    padding: 10px 15px;
+}
+
+#home .header h1 {
+    font-size: 2rem;
+    width: 450px;
+    margin-left: 5px;
+    border-bottom: 2px solid var(--black);
+}
+
+#home .header h3 {
+    font-size: 1.5rem;
+    font-weight: lighter;
+    margin-right: 10px;
+    display: flex;
+    justify-content: flex-end;
+    width: 300px;
+}
+
+#home .header .input-box {
+    position: relative;
+    width: 65%;
+    margin: 15px auto 0px auto;
+    box-shadow: var(--shadow);
+    border-radius: 5px;
+}
+
+#home .header .input-box input {
+    padding: 15px 10px 10px 45px;
+    border: 2px solid var(--dark);
+    width: 100%;
+    color: var(--black);
+    font-weight: 300;
+    font-size: 1rem;
+    border-radius: 5px;
+    outline: none;
+    cursor: text;
+    transition: 0.5s ease;
+}
+
+#home .header .input-box span {
+    position: absolute;
+    left: 0;
+    padding: 15px 10px 10px 45px;
+    pointer-events: none;
+    font-weight: 300;
+    font-size: 1rem;
+    letter-spacing: 0.05rem;
+    color: var(--black);
+    transition: 0.5s ease;
+}
+
+#home .header .input-box input:focus::placeholder {
+    color: var(--black);
+}
+
+#home .header .input-box input:valid ~ span,
+#home .header .input-box input:focus ~ span {
+    color: var(--neon);
+    border: 2px solid var(--neon);
+    background: white;
+    transform: translate(20px, -12px);
+    border-radius: 3px;
+    font-size: 0.8rem;
+    padding: 0 8px;
+}
+
+#home .header .input-box i {
+    position: absolute;
+    top: 14px;
+    left: 10px;
+    width: 30px;
+    font-size: 1.2rem;
+    padding: 0px 15px 2px 0px;
+    font-weight: bold;
+    color: var(--dark);
+    border-right: 2px solid var(--dark);
+    transition: 0.3s ease;
+}
+
+#home .header .input-box input:valid ~ i,
+#home .header .input-box input:focus ~ i,
+#home .header .input-box input:hover ~ i {
+    color: var(--neon);
+    border-right: 2px solid var(--neon);
+}
+
+#home .header .input-box input:valid,
+#home .header .input-box input:focus,
+#home .header .input-box input:hover {
+    border: 2px solid var(--neon);
+}
+
+
+
+
+
+
+
+
+
+/* -------->     Main (Home: Body)      <------------ */
+
+
+
+
+
+
+
+
+
+#home .body {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 285px);
+    padding: 10px;
+    padding-bottom: 0;
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+#home .body .page {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background: transparent;
+    overflow-y: scroll;
+    transform: scale(0.95);
+    transition: opacity 0.3s ease, transform 0.5s ease-out;
+}
+
+#home .body .page.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+#home .body .page .title .see-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 75px;
+    height: 25px;
+    gap: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--white);
+    background: var(--black);
+    border: 1px solid var(--white);
+    border-radius: 5px;
+    transition: 0.1s ease;
+}
+
+#home .body .page .title .see-more:hover,
+#home .body .page .title .see-more:active {
+    color: var(--neon);
+    border: 1px solid var(--neon);
+    background: var(--white);
+}
+
+#home .body .page .empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+}
+
+#home .body .page li {
+    display: grid;
+    grid-template-columns: 100px 1fr 20px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 150px;
+    min-height: 150px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--grey);
+    cursor: pointer;
+    transition: 0.1s ease;
+}
+
+#home .body .page li.inactive {
+    filter: grayscale(1);
+}
+
+#home .body .page li:hover .ri-arrow-right-s-line,
+#home .body .page li:active .ri-arrow-right-s-line {
+    color: var(--neon);
+    margin-left: 5px !important;
+}
+
+#home .body .page li .img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+#home .body .page li .img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#home .body .page li .details {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding-left: 15px;
+}
+
+#home .body .page li h1 {
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+#home .body .page li h3 {
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+#home .body .page li b {
+    font-weight: bold;
+    color: var(--neon);
+}
+
+#home .body .page li .flex-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+#home .body .page li .flex-box h5 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    font-size: 0.6rem;
+    font-weight: lighter;
+}
+
+#home .body .page li .price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+#home .body .page li .ri-arrow-right-s-line {
+    font-size: 1.5rem;
+    font-weight: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 20px;
+    transition: 0.1s ease;
+    transition-delay: 0.1s;
+}
+
+
+
+
+
+
+
+
+/* -------->     Main (Home: approvalHistory)      <------------ */
+
+
+
+
+
+
+
+
+
+#home .body #approvalHistory,
+#home .body #seeMorePayments{
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
+}
+
+
+
+
+
+
+
+
+
+/* -------->     top      <------------ */
+
+
+
+
+
+
+
+
+
+#home .body #approvalHistory .top {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+#home .body #approvalHistory .top h3 {
+    font-size: 2rem;
+    letter-spacing: 2px;
+}
+
+
+
+
+
+
+
+
+/* -------->     middle      <------------ */
+
+
+
+
+
+
+
+
+
+#home .body .page .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 50px;
+    min-height: 50px;
+    padding: 0 10px;
+    color: var(--black);
+    border-bottom: 2px solid var(--black);
+}
+
+#home .body #seeMorePayments .title {
+    display: grid;
+    grid-template-columns: 50px 1fr 50px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 50px;
+    min-height: 50px;
+    padding: 0 10px;
+    color: var(--black);
+    border-bottom: 2px solid var(--black);
+}
+
+#home .body .page .title .go-back {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+#home .body .page .title .go-back i {
+    font-size: 1.6rem;
+    transition: 0.3s ease;
+}
+
+#home .body .page .title .go-back i:hover {
+    scale: 1.5;
+    color: var(--neon);
+    cursor: pointer;
+}
+
+#home .body .page .title .see-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 75px;
+    height: 25px;
+    gap: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--white);
+    background: var(--black);
+    border: 1px solid var(--white);
+    border-radius: 5px;
+    transition: 0.1s ease;
+}
+
+#home .body .page .title .see-more:hover,
+#home .body .page .title .see-more:active {
+    color: var(--neon);
+    border: 1px solid var(--neon);
+    background: var(--white);
+}
+
+#home .body .page .title .ri-add-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 35px;
+    min-height: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    outline: none;
+    color: var(--black);
+    background: transparent;
+    border: 3px solid var(--black);
+    border-radius: 45% / 65%;
+    cursor: pointer;
+    transition: 0.1s ease-in-out;
+}
+
+#home .body .page .title .ri-add-line:hover, 
+#home .body .page .title .ri-add-line:active {
+    color: var(--neon);
+    border: 3px solid var(--neon);
+}
+
+#home .body #approvalHistory p.no-payments,
+#home .body #seeMorePayments p.no-payments {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    font-size: 1rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#home .body #approvalHistory ul,
+#home .body #seeMorePayments ul {
+    width: 95%;
+    padding: 0;
+    margin: 0;
+}
+
+#home .body #approvalHistory ul li#headings,
+#home .body #seeMorePayments ul li#headings {
+    height: 30px;
+    min-height: 30px;
+    margin-bottom: 10px;
+}
+
+#home .body #approvalHistory li#headings h5,
+#home .body #seeMorePayments li#headings h5 {
+    margin: 0;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+#home .body #approvalHistory ul li,
+#home .body #seeMorePayments ul li {
+    display: grid;
+    grid-template-columns: 1fr 100px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: fit-content;
+    min-height: fit-content;
+    margin: 5px auto;
+    transform: scale(1);
+    transition: transform 0.5s ease;
+}
+
+#home .body #approvalHistory ul li.active,
+#home .body #seeMorePayments ul li.active {
+    transform: scale(1.05);
+    transition: transform 0.5s ease;
+    background: var(--upDown);
+    border-radius: 10px;
+}
+
+#home .body #approvalHistory ul li .hidden,
+#home .body #seeMorePayments ul li .hidden {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    width: calc(100% + 100px);
+    height: 100%;
+    max-height: 0;
+    background: var(--white);
+    border-top: 5px solid var(--neon);
+    font-size: 1rem;
+    visibility: hidden;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease, opacity 0.5s ease, visibility 0.5s ease;
+}
+
+/* Expanded hidden content: smoothly revealed */
+#home .body #approvalHistory ul li.active .hidden,
+#home .body #seeMorePayments ul li.active .hidden {
+    max-height: 500px; /* Adjust to accommodate the content */
+    opacity: 1;
+    visibility: visible;
+    z-index: var(--lvl5);
+}
+
+#home .body #approvalHistory ul li .type,
+#home .body #seeMorePayments ul li .type {
+    width: 100%;
+    text-align: left !important;
+    padding-left: 10px;
+}
+
+#home .body #approvalHistory ul li:hover,
+#home .body #seeMorePayments ul li:hover {
+    background: var(--upDown);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#home .body #approvalHistory ul li .img,
+#home .body #seeMorePayments ul li .img {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+#home .body #approvalHistory ul li .img img {
+    display: block;
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+#home .body #approvalHistory ul li .reason,
+#home .body #approvalHistory ul li .start,
+#home .body #approvalHistory ul li .end {
+    padding: 0 10px;
+    text-align: left;
+    font-size: 1rem;
+    margin: 0 0 !important;
+}
+
+
+
+
+
+
+
+
+
+
+/* -----------------------------         Main (pay)         ------------------------------------ */
+
+
+
+
+
+
+
+
+
+#verify {
+    gap: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+/*      >>>     Body    <<< */
+
+
+
+
+
+
+
+
+
+#verify .body {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 110px);
+    background: var(--white);
+    border: 5px solid var(--white);
+    box-shadow: var(--shadow);
+    border-radius: 2rem;
+    overflow: hidden;
+    z-index: var(--lvl3);
+}
+
+#verify .body .page {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transform: scale(0.95);
+    transition: opacity 0.3s ease, transform 0.5s ease-out;
+    overflow-y: auto;
+}
+
+#verify .body .page.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+#verify .body .page .top {
+    position: relative;
+    display: flex;
+    grid-template-columns: 1fr 30px 1fr;
+    justify-content: center; /* Align items at the top */
+    align-items: center;
+    width: 100%;
+    min-height: 100px;
+    padding: 10px 0;
+    background: var(--upDown);
+    border-radius: 60% / 30%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    z-index: var(--lvl2) !important;
+}
+
+#verify .body .page .top h1 {
+    display: flex;
+    justify-content: center; /* Align items at the top */
+    align-items: center;
+    border-bottom: 1px solid black;
+    font-size: 1.9rem;
+}
+
+#verify .body .page .top i {
+    display: flex;
+    justify-content: center; /* Align items at the top */
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+
+
+
+
+
+
+
+
+/*      >>>     Menu (inputs)     <<<*/
+
+
+
+
+
+
+
+
+
+#verify .body .page .middle{
+    display: flex;
+    height: 70%;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    transition: 0.2s ease-in-out;
+}
+
+#verify .body .page .middle ul{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+#verify .body .page .middle ul li{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 10px;
+    gap: 10px;
+    margin-top: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+#verify .body .page .middle ul li button{
+    height: 100%;
+}
+
+#verify .body .page .middle ul li .input-box {
+    position: relative;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    padding-right: 0px;
+    margin-left: 50px;
+    transition: 0.2s ease-in-out;
+}
+
+#verify .body .page .middle ul li .input-box input{
+    height: 50px;
+    min-height: 50px;
+    width: 100%;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    border: 1px solid var(--black);
+    border-radius: 5px;
+    outline: none;
+    resize: none;
+    transition: 0.2s ease-in-out;
+}
+
+#verify .body .page .middle ul li .input-box span{
+    position: absolute;
+    left: 0;
+    padding: 10px;
+    padding-left: 20px;
+    pointer-events: none;
+    font-size: 1rem;
+    transition: 0.2s ease-in-out;
+}
+
+#verify .body .page .middle ul li .input-box input:valid ~ span,
+#verify .body .page .middle ul li .input-box input:focus ~ span{
+    color: var(--neon);
+    transform: translateX(15px) translateY(-10px);
+    scale: 0.8;
+    padding: 0 10px;
+    background: var(--white);
+    color: var(--neon);
+    letter-spacing: 0.2rem;
+}
+
+#verify .body .page .middle ul li .input-box input:focus,
+#verify .body .page .middle ul li .input-box input:valid {
+    border: 1px solid var(--neon);
+}
+
+
+
+
+
+
+
+
+
+/*      >>>     Menu (account details)     <<<*/
+
+
+
+
+
+
+
+
+
+#verify .body #accountInformationPage .middle {
+    margin-top: 10px;
+}
+
+#verify .body .page .middle .account-details {
+    position: relative;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    margin-left: 50px;
+    gap: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+#verify .body .page .middle .account-details input{
+    height: 50px;
+    min-height: 50px;
+    width: 50%;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    border: 1px solid var(--black);
+    border-radius: 5px;
+    outline: none;
+    resize: none;
+    transition: 0.2s ease-in-out;
+}
+
+#verify .body .page .middle .account-details span{
+    position: absolute;
+    left: 0;
+    padding: 10px;
+    padding-left: 20px;
+    pointer-events: none;
+    font-size: 1rem;
+    transition: 0.2s ease-in-out;
+}
+
+#verify .body .page .middle .account-details input:valid ~ span,
+#verify .body .page .middle .account-details input:focus ~ span{
+    color: var(--neon);
+    transform: translateX(15px) translateY(-10px);
+    scale: 0.8;
+    padding: 0 10px;
+    background: var(--white);
+    color: var(--neon);
+    letter-spacing: 0.2rem;
+}
+
+#verify .body .page .middle .account-details input:focus,
+#verify .body .page .middle .account-details input:valid {
+    border: 1px solid var(--neon);
+}
+
+
+
+
+
+
+
+
+/*      >>>     Bottom     <<<*/
+
+
+
+
+
+
+
+
+
+#verify .body .page .bottom {
+    display: flex;
+    justify-content: center; /* Align items at the top */
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+    gap: 20px;
+    z-index: var(--lvl2) !important;
+    bottom: 0;
+}
+
+#verify .body .page .bottom button {
+    width: 200px;
+    min-width: 200px;
+    height: 50px;
+    max-height: 50px;
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
+
+
+
+
+
+
+
+
+/* -----------------------------         Footer         ------------------------------------ */
+
+
+
+
+
+
+
+
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 500px;
+    height: 70px;
+    padding: 0 25px;
+    background: var(--white);
+    box-shadow: 0 0 3px 20px var(--light);
+    border-top-right-radius: 1.2rem;
+    border-top-left-radius: 1.2rem;
+    z-index: var(--lvl4);
+}
+
+footer ul {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 20px;
+}
+
+footer ul li {
+    box-sizing: border-box;
+    position: relative;
+    list-style: none;
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+    z-index: var(--lvl1);
+}
+
+footer ul li .a {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    font-weight: 500;
+}
+
+footer ul li .icon {
+    position: relative;
+    display: block;
+    line-height: 75px;
+    font-size: 1.5rem;
+    text-align: center;
+    transition: 0.5s ease;
+    color: var(--dark);
+}
+
+footer ul #mainLi.active .icon {
+    background: var(--gradient);
+    transform: translateY(-35px);
+    font-size: 1.3rem;
+    transition: 0.2s ease-in-out;
+}
+
+footer ul #mainLi .icon {
+    background: linear-gradient(27deg, var(--dark) 0%, var(--dark) 90%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: var(--inset), var(--shadow);
+    transform: translateY(-25px);
+    font-size: 1.2rem;
+    color: var(--white);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    transition: 0.2s ease-in-out;
+}
+
+footer ul li.active .icon {
+    transform: translateY(-10px);
+    font-size: 1.5rem;
+    background-image: var(--gradient);
+    -webkit-background-clip: text; /* For Safari */
+    background-clip: text; /* App*/ 
+    color: transparent;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+footer ul li .text {
+    position: absolute;
+    color: var(--dark);
+    font-weight: 200;
+    font-size: 0.8rem;
+    letter-spacing: 0.1rem;
+    transition: 0.5s ease;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+footer ul li.active .text {
+    opacity: 1;
+    font-weight: bold;
+    transform: translateY(15px);
+    color: var(--dark);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+footer .indicator {
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 70px;
+    background: var(--light);
+    color: var(--white);
+    box-shadow: var(--inset);
+    border-radius: 50%;
+    border: 6px solid var(--light);
+    transition: transform 0.5s ease; /* Add transition for transform property */
+}
+
+footer .indicator::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -77%;
+    width: 50px;
+    height: 35px;
+    background: transparent;
+    border-top-right-radius: 100%;
+    box-shadow: 1px -15px 3px var(--light);
+    pointer-events: none;
+}
+
+footer .indicator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -77%;
+    width: 50px;
+    height: 35px;
+    background: transparent;
+    border-top-left-radius: 100%;
+    box-shadow: -1px -10px 3px var(--light);
+    pointer-events: none;
+}
+
+
+
+
+
+
+
+
+
+
+/* Medium Tablet screen width */
+@media (max-width: 500px) {
+    section {
+        min-height: calc(100vh - 100px) !important;
+        height: calc(100vh - 100px) !important;
+        max-height: calc(100vh - 100px) !important;
+        padding: 10px !important;
+    }
+    #menu .body .page {
+        padding: 10px !important;
+    }
+    footer,
+    footer ul {
+        padding: 0 10px;
+        width: 100%;
+    }
+}
