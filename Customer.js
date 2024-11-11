@@ -32,7 +32,13 @@ let myData;
 
 
 
-
+// Regex patterns
+const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // At least 8 chars, 1 letter, and 1 number
+const idRegex = /^\d{10}$/; // Example ID validation (10-digit number)
+const accountNumberRegex = /^\d{8,12}$/; // 8 to 12 digit account number
+const currencyRegex = /^[A-Z]$/; // Currency codes like USD, EUR
+const amountRegex = /^\d+(\.\d{1,2})?$/; // Validates up to 2 decimal points
 
 
 
@@ -473,9 +479,25 @@ async function handleSignup(event) {
     const signPassword = document.getElementById('signPassword').value;
     const signConfPassword = document.getElementById('signConfPassword').value;
 
-    // Validate password and confirm password
+    // Validate inputs
+    if (!emailRegex.test(signEmail)) {
+        alert("Invalid email format.");
+        return;
+    }
+    if (!idRegex.test(signId)) {
+        alert("Invalid ID format.");
+        return;
+    }
+    if (!accountNumberRegex.test(signAccount)) {
+        alert("Invalid account number format.");
+        return;
+    }
+    if (!passwordRegex.test(signPassword)) {
+        alert("Invalid password format.");
+        return;
+    }
     if (signPassword !== signConfPassword) {
-        alert('Passwords do not match');
+        alert("Passwords do not match.");
         return;
     }
 
@@ -521,6 +543,11 @@ async function handleLogin() {
     const loginPassword = document.getElementById('loginPassword').value;
 
     const homePage = document.getElementById("home");
+
+    if (!emailRegex.test(loginName) && !accountNumberRegex.test(loginName)) {
+        alert("Invalid email or account number.");
+        return;
+    }
 
     // Send the login credentials to the server for verification
     try {
@@ -625,7 +652,21 @@ function paymentsNavigation() {
         currency = currencyBox.value;
         provider = providerBox.value;
         amount = amountInput.value;
-        
+
+
+
+        // Provider Validation
+        if (!provider.match(/^[a-zA-Z\s]+$/)) {
+            alert("Please select a valid provider (letters and spaces only).");
+            valid = false;
+        }
+
+        // Amount Validation
+        if (!amountRegex.test(amount)) {
+            alert("Invalid amount.");
+            return;
+        }
+
         activateHTML(detailsPage, accountInfoPage);
 
         window.history.pushState({ page: "pay", action: "info" }, '', "");
@@ -644,45 +685,75 @@ function paymentsNavigation() {
         const payBank = document.getElementById("payBank").value;
         const payAccountNum = document.getElementById("payAccountNum").value;
         const swiftCode = document.getElementById("paySwiftCode").value;
+        const amount = document.getElementById("inAmount").value;
 
-        const customerId = myData.userId;
+        let valid = true; // Track if all validations pass
 
-        const paymentData = {
-            currency: currency,
-            provider: provider,
-            amount: amount,
-            recipientName: payName,
-            recipientBank: payBank,
-            recipientAccount: payAccountNum,
-            swiftCode: swiftCode,
-            date: new Date(),
-            status: 'Pending',
-            customerId: customerId,
-        };
+        // Recipient Name Validation
+        if (!payName.match(/^[a-zA-Z\s-]+$/)) {
+            alert("Please enter a valid recipient name (letters, spaces, and hyphens only).");
+            valid = false;
+        }
 
-        const response = await fetch('http://localhost:3000/api/addPayment', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({...paymentData})
-        });
+        // Bank Name Validation
+        if (!payBank.match(/^[a-zA-Z\s]+$/)) {
+            alert("Please enter a valid bank name (letters and spaces only).");
+            valid = false;
+        }
 
-        const result = await response.json();
-        
-        if (response.ok) {
-            console.log('Payment added successfully:', result);
+        // Account Number Validation
+        if (!payAccountNum.match(/^\d+$/)) {
+            alert("Please enter a valid account number (only numbers allowed).");
+            valid = false;
+        }
 
-            clearPaymentInputs();
+        // Swift Code Validation
+        if (!swiftCode.match(/^[a-zA-Z\s]/)) {
+            alert("Please enter a valid Swift code (only lettera allowed).");
+            valid = false;
+        }
 
-            activateHTML(accountInfoPage, homeSection);
+        // Only proceed if all validations are successful
+        if (valid) {
+            const customerId = myData.userId;
 
-            displayPayments();
+            const paymentData = {
+                currency: currency,
+                provider: provider,
+                amount: amount,
+                recipientName: payName,
+                recipientBank: payBank,
+                recipientAccount: payAccountNum,
+                swiftCode: swiftCode,
+                date: new Date(),
+                status: 'Pending',
+                customerId: customerId,
+            };
 
-            window.history.pushState({ page: "home", action: "default" }, '', "");
+            const response = await fetch('http://localhost:3000/api/addPayment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(paymentData)
+            });
 
-        } else {
-            console.error('Failed to add payment:', result.error);
+            const result = await response.json();
+
+            if (response.ok) {
+                console.log('Payment added successfully:', result);
+
+                clearPaymentInputs();
+
+                activateHTML(accountInfoPage, homeSection);
+
+                displayPayments();
+
+                window.history.pushState({ page: "home", action: "default" }, '', "");
+
+            } else {
+                console.error('Failed to add payment:', result.error);
+            }
         }
     });
 }

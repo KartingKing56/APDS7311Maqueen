@@ -5,12 +5,24 @@ import jwt from 'jsonwebtoken';
 import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import { ObjectId } from 'mongodb';
+import axios from 'axios';
+import https from 'https'; // HTTPS module for creating secure server
+import fs from 'fs'; // File system module to read SSL certificates
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express(); // Create the Express app
 const router = express.Router();
 
 // Middleware
-app.use(cors()); // Enable CORS
+app.use(cors({
+    origin: '*',
+    methods: 'GET,POST,PUT',  // Specify allowed HTTP methods
+}));
 app.use(express.json()); // To parse JSON request bodies
 
 // Rate limiter configuration
@@ -20,6 +32,41 @@ const loginLimiter = rateLimit({
     message: 'Too many login attempts, please try again after 15 minutes.',
 });
 
+// app.use((req, res, next) => {
+//     if (req.protocol === 'https') {
+//         return next();
+//     } else {
+//         res.redirect('https://' + req.headers.host + req.url);
+//     }
+// });
+
+const sslOptions = {
+    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem')),
+};
+
+// Define regex patterns
+const patterns = {
+    name: /^[a-zA-Z\s]{1,50}$/,
+    surname: /^[a-zA-Z\s]{1,50}$/,
+    idNumber: /^\d{13}$/, // South African ID format example
+    email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    accountNumber: /^\d{10,12}$/, // Example account number format
+    password: /^[\w@#$%^&+=]{8,20}$/, // Alphanumeric with special characters
+    currency: /^[A-Z]{3}$/, // ISO currency code format
+    provider: /^[a-zA-Z\s]{1,50}$/,
+    amount: /^\d+(\.\d{1,2})?$/,
+    recipientName: /^[a-zA-Z\s]{1,100}$/,
+    recipientBank: /^[a-zA-Z\s]{1,100}$/,
+    recipieantAccount: /^\d{10,12}$/,
+    swiftCode: /^[A-Z0-9]{8,11}$/,
+};
+
+function validateInput(field, value) {
+    const regex = patterns[field];
+    return regex ? regex.test(value) : false;
+}
+
 // Signup route (server-side method)
 router.post('/signup', async (req, res) => {
     try {
@@ -28,6 +75,13 @@ router.post('/signup', async (req, res) => {
         if (!name || !surname || !idNumber || !email || !accountNumber || !password) {
             return res.status(400).json({ message: 'Please provide all required fields: name, surname, idNumber, email, accountNumber, and password.' });
         }
+
+        if (!validateInput('name', name) || !validateInput('surname', surname) ||
+        !validateInput('idNumber', idNumber) || !validateInput('email', email) ||
+        !validateInput('accountNumber', accountNumber) || !validateInput('password', password)) 
+        {
+            return res.status(400).json({ message: 'Invalid input format.' });
+        }   
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
@@ -199,6 +253,14 @@ router.post('/addPayment', async (req, res) => {
         recipientAccount, swiftCode, date, status, customerId } = req.body;
 
     try {
+
+        if (!validateInput('currency', currency) || !validateInput('provider', provider) ||
+            !validateInput('amount', amount) || !validateInput('recipientName', recipientName) ||
+            !validateInput('recipientBank', recipientBank) || !validateInput('recipieantAccount', recipieantAccount) ||
+            !validateInput('swiftCode', swiftCode)) {
+            return res.status(400).json({ message: 'Invalid input format.' });
+        }
+        
         const paymentsCollection = db.collection('payments');
 
         // Define the payment document
@@ -281,6 +343,9 @@ router.put('/updatePaymentStatus', async (req, res) => {
 
 // Use the router
 app.use('/api', router);
+
+// Creates the HTTPS server with SSL configuration
+const sslServer = https.createServer(sslOptions, app);
 
 // Start the server
 const PORT = process.env.PORT || 3000;

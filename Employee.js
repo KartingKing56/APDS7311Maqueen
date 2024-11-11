@@ -22,6 +22,8 @@ const signConfirmPassword = document.getElementById('signConfPassword');
 const loginPassword = document.getElementById('loginPassword');
 
 
+let valid = true;
+
 let myData;
 
 
@@ -585,20 +587,54 @@ function paymentInputVerification() {
             
             // Add active class to the input corresponding to the clicked button
             const inputField = this.closest('li').querySelector('input');
-            inputField.classList.add('active');
+
+
+            if (inputField.id === "inName") {
+                if (!inputField.value.match(/[a-zA-Z\s-]+/)) {
+                    alert("Please enter a valid recipient name (letters, spaces, and hyphens only).");
+                    valid = false;
+                }
+            } else if (inputField.id === "inBank") {
+                if (!inputField.value.match(/[a-zA-Z\s]+/)) {
+                    alert("Please enter a valid bank name (letters and spaces only).");
+                    valid = false;
+                }
+            } else if (inputField.id === "inAccountNumber") {
+                if (!inputField.value.match(/^\d+$/)) {
+                    alert("Please enter a valid account number (only numbers allowed).");
+                    valid = false;
+                }
+            } else if (inputField.id === "inAmount") {
+                if (!inputField.value.match(/^\d+(\.\d{1,2})?$/)) {
+                    alert("Please enter a valid amount (up to two decimal places).");
+                    valid = false;
+                }
+            } else if (inputField.id === "inSwift") {
+                if (!inputField.value.match(/[a-zA-Z\s]+/)) {
+                    alert("Please enter a valid Swift code.");
+                    valid = false;
+                }
+            }
+
+            if (valid) {
+                inputField.classList.add('active');
+            }
         });
     });
 
     submitPayment.addEventListener('click', async function () {
-        await updatePaymentStatus("Approved");
+        if (valid)
+        {
+            await updatePaymentStatus("Approved");
 
-        resetInputsAndRemoveActiveClass();
+            resetInputsAndRemoveActiveClass();
 
-        paymentData = await getPaymentData();
-        displayPayments(paymentData);
+            paymentData = await getPaymentData();
+            displayPayments(paymentData);
 
-        activateHTML(verifySection, homeSection);
-        window.history.pushState({ page: "home", action: "default" }, '', '');
+            activateHTML(verifySection, homeSection);
+            window.history.pushState({ page: "home", action: "default" }, '', '');
+        }
         
     });
 
@@ -611,6 +647,7 @@ function paymentInputVerification() {
         displayPayments(paymentData);
 
         activateHTML(verifySection, homeSection);
+        alert("Payment Rejected.");
         window.history.pushState({ page: "home", action: "default" }, '', '');
     });
 }
