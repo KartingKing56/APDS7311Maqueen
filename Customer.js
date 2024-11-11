@@ -15,9 +15,7 @@ const accountInfoPage = document.getElementById("accountInformationPage");
 const signUpBtn = document.getElementById("createAccount");
 const chk = document.getElementById('chk');
 const logInBtn = document.getElementById("login");
-const nextBtn = document.querySelector("#pay .body .page .bottom #nextBtn");
-const submitBtn = document.getElementById("submitBtn");
-const cancelBtn = document.querySelector("#pay #accountInformationPage .bottom #cancelBtn")
+
 const localPaymentBtn = document.getElementById("localPaymentBtn");
 const internationalPaymentBtn = document.getElementById("internationalPaymentBtn");
 
@@ -134,9 +132,9 @@ async function mainJS() {
                 //  >>> Main (Home)
 
                 try {
-                    displayLeave(paymentData);
+                    displayPayments();
                 } catch (error) {
-                    console.error(`Error in displayLeave: `, error);
+                    console.error(`Error in displayPayments: `, error);
                 } 
 
                 //  >>> Main (Drivers)
@@ -216,6 +214,7 @@ async function mainJS() {
                         case "home":
                             // Activate the first section (home)
                             console.log("home")
+                            displayPayments();
                             activateSection(0);
                             break;
                         case "pay":
@@ -256,7 +255,6 @@ async function mainJS() {
                 // Replace the current history state with the default home page state
                 window.history.replaceState({ page: "home", action: "default" }, '', window.location.pathname);
 
-                fadeOutLoader();
                 document.querySelector("footer").classList.add("active");
             } catch (error) {
                 console.error(error);
@@ -272,6 +270,127 @@ document.addEventListener('DOMContentLoaded', async function() {
     await mainJS();
     await mainNavigation();
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------             Get Data                ----------------------------------//
+
+
+
+
+
+
+
+
+
+async function getPaymentData() {
+    try {
+        const userId = myData.userId;  // Ensure this holds the actual user ID value
+
+        // Fetch payments from the API
+        const response = await fetch(`http://localhost:3000/api/getPaymentsByUser?userId=${encodeURIComponent(userId)}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        if (!response.ok) throw new Error('Failed to fetch payments');
+        
+        const payments = await response.json();
+
+        return payments
+
+    } catch (error) {
+        console.error('Error processing payments:', error);
+    }
+}
+
+async function displayPayments() {
+    const listElement = document.querySelector("#home .body .page .bottom .payment-receipts ul");
+    const payments = await getPaymentData();
+    
+    if (payments.length === 0) {
+        listElement.innerHTML = `
+            <p style="margin: 10px auto; text-align: center; width:100%;">You have made no Payments</p>
+        `;
+        return;
+    }
+
+    listElement.innerHTML = ``;
+
+    payments.forEach(payment => {
+        const payItem = document.createElement('li');
+        payItem.innerHTML = `
+            <div class="icon"><i class="ri-bank-card-2-fill"></i></div>
+            <div class="date">${payment.formattedDate}</div>
+            <div class="name">${payment.recipientName}</div>
+            <div class="button"><button>Pay Again</button></div>
+        `;
+        const payAgainBtn = payItem.querySelector(".button button");
+        listElement.appendChild(payItem);
+
+        payAgainBtn.addEventListener('click', function() {
+            openPayment(payment);
+        });
+    });
+}
+
+async function openPayment(payment) {
+    document.getElementById("currencyComboBox").value = "";
+    document.getElementById("providerComboBox").value = "";
+    document.getElementById("inAmount").value = "";
+    
+    document.getElementById("payName").value = payment.recipientName;
+    document.getElementById("payBank").value = payment.recipientBank;
+    document.getElementById("payAccountNum").value = payment.recipientAccount;
+    document.getElementById("paySwiftCode").value = payment.swiftCode;
+
+    activateHTML(homeSection, paySection);
+
+    activateHTML(accountInfoPage, detailsPage);
+
+    window.history.pushState({ page: "pay", action: "default" }, '', "");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -418,7 +537,14 @@ async function handleLogin() {
     }
 }
 
+
+let navigationInitialized = false;
+
 function mainNavigation() {
+    // Prevent attaching event listeners multiple times
+    if (navigationInitialized) return;
+    navigationInitialized = true;
+
     const navItems = document.querySelectorAll("footer ul li");
     const sections = document.querySelectorAll("section");
     const pageNames = ["home", "pay"];
@@ -430,39 +556,35 @@ function mainNavigation() {
             document.querySelector("footer ul li.active")?.classList.remove("active");
             item.classList.add("active");
 
-            // Activate the corresponding section
-            activateHTML(document.querySelector("section.active"), sections[index]);
+            const activeSection = document.querySelector("section.active");
 
-            
-            if (index === 1)
-            {
-                activateHTML(accountInfoPage, detailsPage);
-            }
+            // Activate the corresponding section
+            activateHTML(activeSection, sections[index]);
 
             // Determine the page name for history state
             const pageName = pageNames[index] || "home"; // Default to "home" if index is out of range
             window.history.pushState({ page: pageName, action: "default" }, '', "");
         });
     });
-    navItems[2].addEventListener("click", async function() {
+
+    // Sign out functionality
+    navItems[2].addEventListener("click", async function () {
         signOut();
     });
 
-    create.addEventListener('submit', async function() {
-        
+    // Signup form submission handler
+    create.addEventListener('submit', async function (event) {
         event.preventDefault(); // Prevent form submission
         handleSignup(event); // Call the signup handler
-        
     });
 
-    login.addEventListener('submit', async function() {
-
+    // Login form submission handler
+    login.addEventListener('submit', async function (event) {
         event.preventDefault(); // Prevent form submission
         handleLogin(); // Call the login handler
-
     });
-
 }
+
 
 function activateHTML(hideThisBox, showThisBox) {
     // Check if showThisBox is already active
@@ -483,6 +605,10 @@ function activateHTML(hideThisBox, showThisBox) {
 }
 
 function paymentsNavigation() {
+    const nextBtn = document.querySelector("#pay .body #payDetailsPage .bottom #nextBtn");
+    const submitBtn = document.querySelector("#pay .body #accountInformationPage .bottom #submitBtn");
+    const cancelBtn = document.querySelector("#pay .body #accountInformationPage .bottom #cancelBtn")
+
     nextBtn.addEventListener('click', () => {
         const currencyBox = document.getElementById("currencyComboBox");
         const providerBox = document.getElementById("providerComboBox");
@@ -491,20 +617,18 @@ function paymentsNavigation() {
         currency = currencyBox.value;
         provider = providerBox.value;
         amount = amountInput.value;
-
-        clearPaymentInputs();
         
         activateHTML(detailsPage, accountInfoPage);
 
-        window.history.pushState({ page: pageName, action: "info" }, '', "");
+        window.history.pushState({ page: "pay", action: "info" }, '', "");
     });
 
     cancelBtn.addEventListener('click', () => {
         clearPaymentInputs();
 
-        activateHTML(detailsPage, accountInfoPage);
+        activateHTML(accountInfoPage, detailsPage);
 
-        window.history.pushState({ page: pageName, action: "default" }, '', "");
+        window.history.pushState({ page: "pay", action: "default" }, '', "");
     });
 
     submitBtn.addEventListener('click', async () => {
@@ -521,7 +645,7 @@ function paymentsNavigation() {
             amount: amount,
             recipientName: payName,
             recipientBank: payBank,
-            recipieantAccount: payAccountNum,
+            recipientAccount: payAccountNum,
             swiftCode: swiftCode,
             date: new Date(),
             status: 'Pending',
@@ -533,7 +657,7 @@ function paymentsNavigation() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(paymentData)
+            body: JSON.stringify({...paymentData})
         });
 
         const result = await response.json();
@@ -544,6 +668,8 @@ function paymentsNavigation() {
             clearPaymentInputs();
 
             activateHTML(accountInfoPage, homeSection);
+
+            displayPayments();
 
             window.history.pushState({ page: "home", action: "default" }, '', "");
 

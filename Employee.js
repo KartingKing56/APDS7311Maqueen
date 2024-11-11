@@ -768,3 +768,37 @@ function activateHTML(hideThisBox, showThisBox) {
         }, 100);
     }, 100);
 }
+
+
+
+
+
+
+
+
+
+/* -----------------------------         Loader         ------------------------------------ */
+
+
+
+
+
+
+
+
+
+async function fadeInLoader() {
+    const loader = document.querySelector('header');
+    loader.style.display = "flex";
+    setTimeout(() => {
+        loader.classList.remove("active");
+    }, 100);
+}
+
+async function fadeOutLoader() {   
+    const loader = document.querySelector('header');
+    loader.classList.remove("active");
+    setTimeout(() => {
+        loader.style.display = "none";
+    }, 100);
+}

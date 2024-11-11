@@ -77,7 +77,7 @@ router.post('/login', loginLimiter, async (req, res) => {
             }
 
             const token = jwt.sign(
-                { name: user.name, username: user.username, role: "employee" },
+                { name: user.name, username: user.username, role: "employee" , userId: user._id},
                 'this_secret_should_be_longer_than_it_is',
                 { expiresIn: '1h' }
             );
@@ -137,6 +137,24 @@ router.get('/getPayments', async (req, res) => {
     }
 });
 
+router.get('/getPaymentsByUser', async (req, res) => {
+    const { userId } = req.query; // Get userId from query parameters
+    
+    try {
+        const paymentsCollection = db.collection('payments');
+        const paymentsCursor = await paymentsCollection.find({ customerId: userId }); // Match on customerId
+        const payments = await paymentsCursor
+            .sort({ date: -1 }) 
+            .limit(5)  
+            .toArray();
+
+        res.status(200).json(payments);
+    } catch (error) {
+        console.error('Error fetching payments:', error);
+        res.status(500).json({ message: 'Error retrieving payment data.' });
+    }
+});
+
 router.post('/verifyToken', (req, res) => {
     const { token } = req.body;
 
@@ -151,9 +169,9 @@ router.post('/verifyToken', (req, res) => {
     }
 });
 
-router.post('/addPayment', async (rec, res) => {
+router.post('/addPayment', async (req, res) => {
     const { currency, provider, amount, recipientName, recipientBank, 
-        recipieantAccount, swiftCode, date, status, customerId } = req.body;
+        recipientAccount, swiftCode, date, status, customerId } = req.body;
 
     try {
         const paymentsCollection = db.collection('payments');
@@ -165,9 +183,10 @@ router.post('/addPayment', async (rec, res) => {
             amount,
             recipientName,
             recipientBank,
-            recipieantAccount,
+            recipientAccount,
             swiftCode,
-            date: date || new Date(),  // Use current date if not provided
+            formattedDate: new Date().toISOString().split('T')[0], 
+            date: date, // Use current date if not provided
             status,
             customerId,
         };
