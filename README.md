@@ -14,7 +14,7 @@ Github Link: https://github.com/KartingKing56/APDS7311Maqueen
 Video Link: https://youtu.be/ztKDig4im3w
 
 Roles: 
-Overall planner and other attack defences – Davin
+Overall planner and other attack defences, linking GitHub with CircleCI and SonarQube – Davin
 Interface and Password Security(Login/Create Customer) and Web Portal Development - Sameer
 Whitelisting – Likwa 
 SSL – Luwano 
