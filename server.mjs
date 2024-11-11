@@ -5,12 +5,24 @@ import jwt from 'jsonwebtoken';
 import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import { ObjectId } from 'mongodb';
+import axios from 'axios';
+import https from 'https'; // HTTPS module for creating secure server
+import fs from 'fs'; // File system module to read SSL certificates
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express(); // Create the Express app
 const router = express.Router();
 
 // Middleware
-app.use(cors()); // Enable CORS
+app.use(cors({
+    origin: '*',
+    methods: 'GET,POST,PUT',  // Specify allowed HTTP methods
+}));
 app.use(express.json()); // To parse JSON request bodies
 
 // Rate limiter configuration
@@ -19,6 +31,19 @@ const loginLimiter = rateLimit({
     max: 5, // Limit each IP to 5 login attempts per windowMs
     message: 'Too many login attempts, please try again after 15 minutes.',
 });
+
+// app.use((req, res, next) => {
+//     if (req.protocol === 'https') {
+//         return next();
+//     } else {
+//         res.redirect('https://' + req.headers.host + req.url);
+//     }
+// });
+
+const sslOptions = {
+    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem')),
+};
 
 // Signup route (server-side method)
 router.post('/signup', async (req, res) => {
@@ -281,6 +306,9 @@ router.put('/updatePaymentStatus', async (req, res) => {
 
 // Use the router
 app.use('/api', router);
+
+// Creates the HTTPS server with SSL configuration
+const sslServer = https.createServer(sslOptions, app);
 
 // Start the server
 const PORT = process.env.PORT || 3000;
