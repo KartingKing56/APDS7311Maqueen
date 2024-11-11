@@ -77,7 +77,7 @@ router.post('/login', loginLimiter, async (req, res) => {
             }
 
             const token = jwt.sign(
-                { name: user.name, username: user.username, role: "employee" , userId: user._id},
+                { name: user.name, surname: user.surname, username: user.username, role: "employee" , userId: user._id},
                 'this_secret_should_be_longer_than_it_is',
                 { expiresIn: '1h' }
             );
@@ -155,6 +155,31 @@ router.get('/getPaymentsByUser', async (req, res) => {
     }
 });
 
+router.get('/getCustomerById', async (req, res) => {
+    const { customerId } = req.query; // Get customerId from query parameters
+
+    if (!ObjectId.isValid(customerId)) {
+        return res.status(400).json({ message: 'Invalid customer ID' });
+    }
+
+    try {
+        const customerObjectId = new ObjectId(customerId);
+        const customersCollection = db.collection('users');
+        const customer = await customersCollection.findOne({ _id: customerObjectId });
+
+        if (!customer) {
+            return res.status(404).json({ message: 'Customer not found' });
+        }
+
+        // Assuming firstName and lastName are the fields in your MongoDB document
+        const { name, surname } = customer;
+        res.status(200).json({ name: name, surname: surname });  // Send the response in the expected format
+    } catch (error) {
+        console.error('Error fetching customer:', error);
+        res.status(500).json({ message: 'Error retrieving customer data' });
+    }
+});
+
 router.post('/verifyToken', (req, res) => {
     const { token } = req.body;
 
@@ -201,6 +226,56 @@ router.post('/addPayment', async (req, res) => {
     } catch (error) {
         console.error('Error adding payment:', error);
         res.status(500).json({ error: 'An error occurred while adding the payment' });
+    }
+});
+
+router.put('/updatePaymentStatus', async (req, res) => {
+    const { name, bank, accountNumber, amount, swift, newStatus } = req.body;
+
+    // Log request body
+    console.log('Request received with body:', req.body);
+
+    try {
+        const paymentsCollection = db.collection('payments');
+
+        // Log document search criteria
+        console.log('Finding document with criteria:', {
+            recipientName: name,
+            recipientBank: bank,
+            recipientAccount: accountNumber,
+            amount: amount,
+            swiftCode: swift
+        });
+
+        const payment = await paymentsCollection.findOne({
+            recipientName: name,
+            recipientBank: bank,
+            recipientAccount: accountNumber,
+            amount: amount,
+            swiftCode: swift
+        });
+
+        if (!payment) {
+            console.log('No matching payment found');
+            return res.status(404).json({ message: 'No matching payment found' });
+        }
+
+        console.log('Payment found:', payment);
+
+        const result = await paymentsCollection.updateOne(
+            { _id: payment._id },
+            { $set: { status: newStatus } }
+        );
+
+        if (result.modifiedCount === 0) {
+            console.log('Update operation failed');
+            return res.status(500).json({ message: 'Failed to update payment status' });
+        }
+
+        res.status(200).json({ message: 'Payment status updated successfully' });
+    } catch (error) {
+        console.error('Error updating payment status:', error);
+        res.status(500).json({ message: 'Error updating payment status' });
     }
 });
 

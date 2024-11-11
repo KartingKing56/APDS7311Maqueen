@@ -4,7 +4,7 @@ const accountForm = document.getElementById("form");
 const create = document.getElementById("signUpPage");
 const login = document.getElementById("logInPage");
 const homeSection = document.getElementById("home");
-const paySection = document.getElementById("pay");
+const verifySection = document.getElementById("verify");
 const detailsPage = document.getElementById("payDetailsPage");
 const accountInfoPage = document.getElementById("accountInformationPage");
 
@@ -61,6 +61,8 @@ async function mainJS() {
 
                     myData = decodedToken;
 
+                    displayHeader(myData);
+
                     // Check the role and perform actions accordingly
                     if (decodedToken.role === "employee") {
                         console.log("User is an Employee");
@@ -112,7 +114,7 @@ async function mainJS() {
                 //  >>> Main (Home)
 
                 try {
-                    displayLeave(paymentData);
+                    displayPayments(paymentData);
                 } catch (error) {
                     console.error(`Error in displayLeave: `, error);
                 } 
@@ -138,41 +140,6 @@ async function mainJS() {
 
 
                 //  >>> Main (Home)
-
-
-                document.getElementById("searchPayments").addEventListener("input", handleLeaveSearch);
-                document.getElementById("searchPayments").addEventListener("click", () => {
-                    const seeMorePayments = document.querySelector("#home .body #seeMorePayments");
-                    const activePage = document.querySelector("#home .body .page.active");
-                    if (!seeMorePayments.classList.contains("active")) {
-                        window.history.pushState({ page: "home", action: "seeMore" }, '', "");
-                    
-                        document.querySelector("#home .header").classList.add("active");
-                        const title = "Payments"
-
-                        const allPayments = [
-                            ...paymentData.pendingPayments,
-                            ...paymentData.approvedPayments
-                            ];
-
-                        activateHTML(activePage, seeMorePayments);
-                        window.history.pushState({ page: pageName, action: "seeMore" }, '', "");
-
-                        displayMorePayments(paymentData, allPayments, title, "There are no Paymets...");
-                    }
-                });
-
-                function handleLeaveSearch() {
-                    const searchTerm = document.getElementById("searchPayments").value.toLowerCase();
-                    const seeMorePayments = document.querySelector("#home .body #seeMorePayments");
-
-                    const allPayments = [
-                        ...paymentData.pendingPayments,
-                        ...paymentData.approvedPayments
-                        ];
-
-                    filterPayments(paymentData, allPayments, seeMorePayments.querySelector("ul"), searchTerm);
-                }
                 
                 document.querySelector("#home #morePending").addEventListener("click", () => {
                     try {
@@ -217,9 +184,9 @@ async function mainJS() {
 
 
 
-                //  >>> Main (Vehicles)
+                //  >>> Main (Verify)
 
-                
+                paymentInputVerification();
 
                 //  >>> Main (Customers)
 
@@ -305,7 +272,6 @@ async function mainJS() {
                 // Replace the current history state with the default home page state
                 window.history.replaceState({ page: "home", action: "default" }, '', window.location.pathname);
 
-                fadeOutLoader();
                 document.querySelector("footer").classList.add("active");
             } catch (error) {
                 console.error(error);
@@ -390,6 +356,12 @@ async function checkTokenAuthState() {
     }
 }
 
+async function displayHeader(myData) {
+    const nameAndSurname = document.querySelector("#home .header.active h3")
+    
+    nameAndSurname.textContent = `${myData.name} ${myData.surname}`;
+}
+
 
 
 
@@ -407,7 +379,7 @@ async function getPaymentData() {
         const payments = await response.json();
 
         // Separate payments by status
-        const approvedPayments = payments.filter(payment => payment.status === 'Approved');
+        const approvedPayments = payments.filter(payment => payment.status !== 'Pending');
         const pendingPayments = payments.filter(payment => payment.status === 'Pending');
 
         // Sort approved payments by newest date first
@@ -449,25 +421,23 @@ async function getPaymentData() {
 
 
 
-function displayPayments() {
-    const currentLeaveUl = document.querySelector('#approvalHistory #pendingPayments');
-    const previousLeaveUl = document.querySelector('#approvalHistory #approvedPayments');
+function displayPayments(paymentData) {
+    const pendingPaymentsUl = document.querySelector('#approvalHistory #pendingPayments');
+    const approvedPaymentsUl = document.querySelector('#approvalHistory #approvedPayments');
 
-    // Display only employees on leave in the "onLeave" container
-    renderPaymentList(paymentData, paymentData.upcomingApplications.slice(0, 2), currentLeaveUl, "No upcoming leave...");
+    renderPaymentList(paymentData, paymentData.pendingPayments.slice(0, 3), pendingPaymentsUl, "No Pending Payments...");
 
-    // Display all employees in the "myEmployees" container (up to 3)
-    renderPaymentList(paymentData, paymentData.previousApplications.slice(0, 3), previousLeaveUl, "Add your first leave Application...");
+    renderPaymentList(paymentData, paymentData.approvedPayments.slice(0, 3), approvedPaymentsUl, "Evaluate your first Payment...");
 }
 
 function displayMorePayments(paymentData, applications, title, emptyMsg) {
-    const moreApplications = document.querySelector("#seeMorePayments");
+    const morePayments = document.querySelector("#seeMorePayments");
     const heading = document.querySelector("#seeMorePayments h1");
 
     heading.textContent = title;
 
     // Call the renderPaymentList to display the list of applications
-    renderPaymentList(paymentData, applications, moreApplications.querySelector("ul"), emptyMsg);
+    renderPaymentList(paymentData, applications, morePayments.querySelector("ul"), emptyMsg);
 }
 
 function openPayment(leaveItem) {
@@ -490,8 +460,33 @@ function openPayment(leaveItem) {
 //      >>>     Helper functions
 
 
-function renderPaymentList(paymentData, payments, listElement, emptyMsg) {
-    if (applications.length === 0) {
+async function getCustomerNameById(customerId) {
+    try {
+        const response = await fetch(`http://localhost:3000/api/getCustomerById?customerId=${encodeURIComponent(customerId)}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch customer data');
+        }
+
+        const data = await response.json();
+
+        if (data.name && data.surname) {
+            console.log(`Customer's Name: ${data.name} ${data.surname}`);
+            return `${data.name} ${data.surname}`;
+        } else {
+            console.error('Customer not found');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching customer details:', error);
+    }
+}
+
+async function renderPaymentList(paymentData, payments, listElement, emptyMsg) {
+    if (payments.length === 0) {
         listElement.innerHTML = `
             <p style="margin: 10px auto; text-align: center; width:100%;">${emptyMsg}</p>
         `;
@@ -500,15 +495,21 @@ function renderPaymentList(paymentData, payments, listElement, emptyMsg) {
 
     listElement.innerHTML = ``;
 
-    payments.forEach(payment => {
+    payments.forEach(async payment => {
         const payItem = document.createElement('li');
+        const customerName = await getCustomerNameById(payment.customerId);
+        
         payItem.innerHTML = `
-            <div class="type">${payment.accountNumber}</div>
+            <div class="name">${customerName}</div>
             <div class="status">${payment.status}</div>
             <div class="hidden">
-                <div class="start"><b>Start Date: </b>${new Date(payment.startDate).toLocaleDateString()}</div>
-                <div class="end"><b>End Date:   </b>${new Date(payment.endDate).toLocaleDateString()}</div>
-                <div class="reason"><b>Reason:     </b>${payment.reason}</div>
+                <div class="currency"><b>Currency:</b>             ${payment.currency}</div>
+                <div class="amount"><b>Amount:</b>               ${payment.amount}</div>
+                <div class="recipient-name"><b>Recipient:</b>            ${payment.recipientName}</div>
+                <div class="recipient-bank"><b>Recipent Bank:</b>        ${payment.recipientBank}</div>
+                <div class="recipient-account"><b>Recipent Account:</b>     ${payment.recipientAccount}</div>
+                <div class="swift"><b>Swift Code:</b>           ${payment.swiftCode}</div>
+                <div class="date"><b>Date:</b>                 ${payment.formattedDate}</div>
             </div>
         `;
         listElement.appendChild(payItem);
@@ -517,22 +518,6 @@ function renderPaymentList(paymentData, payments, listElement, emptyMsg) {
             openPayment(payItem);
         });
     });
-}
-
-function filterLeaveApplications(user, applications, activePage, searchTerm = "") {
-    const filteredApplications = applications.filter(application => {
-        const leaveType = application.ApplicationType.toLowerCase();
-        const term = searchTerm.toLowerCase();
-
-        const matchesSearchTerm = leaveType.includes(term);
-
-        return matchesSearchTerm;
-    });
-
-    // Clear the current application display
-    activePage.querySelector('ul').innerHTML = ``;
-
-    renderPaymentList(user, filteredApplications, activePage.querySelector('ul'), "No leave applications found...");
 }
 
 
@@ -580,6 +565,7 @@ function goBackHome() {
 
 
 
+/* -----------------------------         Verify (Home)         ------------------------------------ */
 
 
 
@@ -589,9 +575,94 @@ function goBackHome() {
 
 
 
+function paymentInputVerification() {
+    const verifyButtons = document.querySelectorAll('button[id^="verify"]'); // Select buttons with IDs starting with "verify"
+    const submitPayment = document.querySelector("#verify .body .page .bottom #submit");
+    const rejectPayment = document.querySelector("#verify .body .page .bottom #reject");
+    
+    verifyButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            
+            // Add active class to the input corresponding to the clicked button
+            const inputField = this.closest('li').querySelector('input');
+            inputField.classList.add('active');
+        });
+    });
 
+    submitPayment.addEventListener('click', async function () {
+        await updatePaymentStatus("Approved");
 
+        resetInputsAndRemoveActiveClass();
 
+        paymentData = await getPaymentData();
+        displayPayments(paymentData);
+
+        activateHTML(verifySection, homeSection);
+        window.history.pushState({ page: "home", action: "default" }, '', '');
+        
+    });
+
+    rejectPayment.addEventListener('click', async function () {
+        await updatePaymentStatus("Rejected");
+
+        resetInputsAndRemoveActiveClass();
+
+        paymentData = await getPaymentData();
+        displayPayments(paymentData);
+
+        activateHTML(verifySection, homeSection);
+        window.history.pushState({ page: "home", action: "default" }, '', '');
+    });
+}
+
+async function updatePaymentStatus(newStatus) {
+    const name = document.getElementById("inName").value;
+    const bank = document.getElementById("inBank").value;
+    const accountNumber = document.getElementById("inAccountNumber").value;
+    const amount = document.getElementById("inAmount").value;
+    const swift = document.getElementById("inSwift").value;
+
+    try {
+        const response = await fetch('http://localhost:3000/api/updatePaymentStatus', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: name,
+                bank: bank,
+                accountNumber: accountNumber,
+                amount: amount,
+                swift: swift,
+                newStatus: newStatus  // Specify the new status here
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update payment status');
+        }
+
+        const result = await response.json();
+        console.log(result.message);
+    } catch (error) {
+        console.error('Error updating payment status:', error);
+    }
+}
+
+function resetInputsAndRemoveActiveClass() {
+    // Get all input elements
+    const inputs = [
+        document.getElementById("inName"),
+        document.getElementById("inBank"),
+        document.getElementById("inAccountNumber"),
+        document.getElementById("inAmount"),
+        document.getElementById("inSwift")
+    ];
+
+    // Loop through each input to clear its value and remove the active class
+    inputs.forEach(input => {
+        input.value = '';           // Clear the input value
+        input.classList.remove('active'); // Remove the 'active' class
+    });
+}
 
 
 
@@ -711,7 +782,13 @@ async function handleLogin() {
     }
 }
 
+let navigationInitialized = false;
+
 function mainNavigation() {
+
+    if (navigationInitialized) return;
+    navigationInitialized = true;
+    
     const navItems = document.querySelectorAll("footer ul li");
     const sections = document.querySelectorAll("section");
     const pageNames = ["home", "verify"];
@@ -766,39 +843,5 @@ function activateHTML(hideThisBox, showThisBox) {
         setTimeout(() => {
             showThisBox.classList.add("active");
         }, 100);
-    }, 100);
-}
-
-
-
-
-
-
-
-
-
-/* -----------------------------         Loader         ------------------------------------ */
-
-
-
-
-
-
-
-
-
-async function fadeInLoader() {
-    const loader = document.querySelector('header');
-    loader.style.display = "flex";
-    setTimeout(() => {
-        loader.classList.remove("active");
-    }, 100);
-}
-
-async function fadeOutLoader() {   
-    const loader = document.querySelector('header');
-    loader.classList.remove("active");
-    setTimeout(() => {
-        loader.style.display = "none";
     }, 100);
 }

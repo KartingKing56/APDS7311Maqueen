@@ -744,7 +744,7 @@ button:hover, button:active {
 
 #home .body .page li {
     display: grid;
-    grid-template-columns: 100px 1fr 20px;
+    grid-template-columns: 1fr 20px;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -1091,8 +1091,8 @@ button:hover, button:active {
     z-index: var(--lvl5);
 }
 
-#home .body #approvalHistory ul li .type,
-#home .body #seeMorePayments ul li .type {
+#home .body #approvalHistory ul li .name,
+#home .body #seeMorePayments ul li .name {
     width: 100%;
     text-align: left !important;
     padding-left: 10px;
@@ -1123,9 +1123,7 @@ button:hover, button:active {
     border-radius: 50%;
 }
 
-#home .body #approvalHistory ul li .reason,
-#home .body #approvalHistory ul li .start,
-#home .body #approvalHistory ul li .end {
+#home .body #approvalHistory ul li .hidden div {
     padding: 0 10px;
     text-align: left;
     font-size: 1rem;
@@ -1319,6 +1317,10 @@ button:hover, button:active {
     outline: none;
     resize: none;
     transition: 0.2s ease-in-out;
+}
+
+#verify .body .page .middle ul li .input-box input.active {
+    background: var(--light);
 }
 
 #verify .body .page .middle ul li .input-box span{
