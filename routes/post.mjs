@@ -64,4 +64,29 @@ router.delete("/:id", async (req,res) => {
     res.send(result.status(200));
 });
 
+//-------------------------------Davin-Start----------------------------------------------//
+
+// User login and session regeneration. 
+router.post("/login", async (req, res) => { 
+    // Replace this with your actual user authentication logic. 
+    const user = await authenticateUser(req.body.username, req.body.password); 
+    
+    if (user) {
+        req.session.regenerate((err) => { 
+            if (err) { 
+                console.error("Session regeneration error:", err); 
+                return res.status(500).send("Error regenerating session"); 
+            } 
+            
+            // Set user information in the session. 
+            req.session.user = { id: user.id, username: user.username }; 
+            res.send("Logged in successfully"); 
+        }); 
+    } else { 
+        res.status(401).send("Invalid username or password"); 
+    } 
+}); 
+
+//-------------------------------Davin-End------------------------------------------------//
+
 export default router;

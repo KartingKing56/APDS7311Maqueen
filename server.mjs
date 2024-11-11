@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import rateLimit from 'express-rate-limit';
 import cors from 'cors';
 import { ObjectId } from 'mongodb';
+import session from 'express-session'; //Davin
 
 const app = express(); // Create the Express app
 const router = express.Router();
@@ -12,6 +13,26 @@ const router = express.Router();
 // Middleware
 app.use(cors()); // Enable CORS
 app.use(express.json()); // To parse JSON request bodies
+
+//-------------------------------Davin-Start----------------------------------------------//
+
+// Session Timeout
+app.use(session({ 
+    secret: 'yourSecretKey', 
+    resave: false, 
+    saveUninitialized: true, 
+    cookie: { 
+        secure: true, 
+        httpOnly: true, 
+        sameSite: 'Strict', 
+        maxAge: 30 * 60 * 1000 // 30 minutes
+    } 
+})); 
+
+// Use Regenerate ID in (post.mjs)
+app.use('/api', postRouter);
+
+//-------------------------------Davin-End------------------------------------------------//
 
 // Rate limiter configuration
 const loginLimiter = rateLimit({
