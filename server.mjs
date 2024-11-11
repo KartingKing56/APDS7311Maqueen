@@ -107,7 +107,7 @@ router.post('/login', loginLimiter, async (req, res) => {
             }
 
             const token = jwt.sign(
-                { name: user.name, email: user.email , role: "customer", userId: user._id},
+                { name: user.name, email: user.email , role: "customer", userId: user._id, accountNumber: user.accountNumber},
                 'this_secret_should_be_longer_than_it_is',
                 { expiresIn: '1h' }
             );

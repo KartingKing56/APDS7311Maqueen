@@ -358,7 +358,7 @@ async function checkTokenAuthState() {
 
 async function displayHeader(myData) {
     const nameAndSurname = document.querySelector("#home .header.active h3")
-    
+
     nameAndSurname.textContent = `${myData.name} ${myData.surname}`;
 }
 

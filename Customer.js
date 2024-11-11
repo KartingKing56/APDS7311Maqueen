@@ -79,6 +79,8 @@ async function mainJS() {
 
                     myData = decodedToken;
 
+                    getBankingDetails(myData)
+
                     // Check the role and perform actions accordingly
                     if (decodedToken.role === "employee") {
                         console.log("User is an Employee");
@@ -361,6 +363,12 @@ async function openPayment(payment) {
     activateHTML(accountInfoPage, detailsPage);
 
     window.history.pushState({ page: "pay", action: "default" }, '', "");
+}
+
+async function getBankingDetails(myData) {
+    const accountNumberContent = document.getElementById("accountNumberHome");
+
+    accountNumberContent.innerText = `${myData.accountNumber}`;
 }
 
 
