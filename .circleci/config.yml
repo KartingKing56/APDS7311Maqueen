@@ -14,6 +14,21 @@ jobs:
       - run:
           name: Run tests
           command: echo \"No test specified in package.json\"
+      - run: 
+          name: Install SonarQube Scanner 
+          command: | 
+            curl -Lo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip 
+            unzip sonar-scanner.zip -d /tmp
+            mv /tmp/sonar-scanner-4.6.2.2472-linux/ /usr/local/sonar-scanner 
+            export PATH=$PATH:/usr/local/sonar-scanner/bin 
+      - run: 
+          name: Run SonarQube Scan 
+          command: | 
+            sonar-scanner \ 
+            -Dsonar.projectKey=$SONAR_PROJECT_KEY \ 
+            -Dsonar.organization=$SONAR_ORGANIZATION \ 
+            -Dsonar.host.url=$SONAR_HOST_URL \ 
+            -Dsonar.login=$SONAR_TOKEN    
   deploy:
     # This is an example deploy job, not actually used by the workflow
     docker:
